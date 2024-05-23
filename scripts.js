@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const scheduleTable = document.getElementById('scheduleTable').getElementsByTagName('tbody')[0]; // Cuerpo de la tabla donde se agregarán las filas
     const totalHoursElement = document.getElementById('totalHours'); // Elemento para mostrar el total de horas trabajadas
     let totalHours = 0; // Variable para almacenar el total de horas trabajadas
+    let editRowIndex = -1; // Índice de la fila que se está editando
 
     // Función para formatear la fecha en el formato "día/mes/año"
     function formatDate(dateString) {
@@ -38,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Función para agregar una fila a la tabla
-    function addRowToTable(day, hours) {
-        const newRow = scheduleTable.insertRow(); // Crear una nueva fila en la tabla
+    function addRowToTable(day, hours, index = -1) {
+        const newRow = scheduleTable.insertRow(index); // Crear una nueva fila en la tabla
         const dayCell = newRow.insertCell(0); // Celda para la fecha
         const hoursCell = newRow.insertCell(1); // Celda para las horas trabajadas
         const actionsCell = newRow.insertCell(2); // Celda para los botones de acción
@@ -48,16 +49,49 @@ document.addEventListener('DOMContentLoaded', function () {
         hoursCell.textContent = hours;
         hoursCell.className = 'narrow'; // Aplicar la clase narrow a la celda de horas trabajadas
 
+        // Crear el botón de editar
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Editar';
+        editButton.className = 'edit'; // Clase para el botón de editar
+        editButton.addEventListener('click', function () {
+            editRow(newRow); // Llamar a la función para editar la fila
+        });
+        actionsCell.appendChild(editButton);
+
         // Crear el botón de eliminar
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Eliminar';
-        deleteButton.className = 'delete';
+        deleteButton.className = 'delete'; // Clase para el botón de eliminar
         deleteButton.addEventListener('click', function () {
-            newRow.remove(); // Eliminar la fila correspondiente
-            updateTotalHours(); // Actualizar el total de horas
-            saveToLocalStorage(); // Guardar cambios en localStorage
+            if (confirm('¿Estás seguro de que quieres eliminar esta entrada?')) {
+                newRow.remove(); // Eliminar la fila correspondiente
+                updateTotalHours(); // Actualizar el total de horas
+                saveToLocalStorage(); // Guardar cambios en localStorage
+            }
         });
         actionsCell.appendChild(deleteButton); // Agregar el botón de eliminar a la celda de acciones
+    }
+
+    // Función para editar una fila en la tabla
+    function editRow(row) {
+        editRowIndex = row.rowIndex - 1; // Almacenar el índice de la fila que se está editando
+        const day = row.cells[0].textContent;
+        const hours = row.cells[1].textContent;
+
+        // Formatear la fecha al formato requerido por el input type="date"
+        document.getElementById('day').value = formatToInputDate(day);
+        document.getElementById('hours').value = hours;
+
+        // Eliminar la fila original
+        row.remove();
+        updateTotalHours();
+        saveToLocalStorage();
+    }
+
+    // Función para formatear la fecha a un formato compatible con el input type="date"
+    function formatToInputDate(dateString) {
+        const [day, month, year] = dateString.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     }
 
     // Manejador de eventos para el formulario
@@ -69,7 +103,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (day && !isNaN(hours)) {
             const formattedDay = formatDate(day); // Formatear la fecha
-            addRowToTable(formattedDay, hours); // Agregar la nueva fila a la tabla
+            addRowToTable(formattedDay, hours, editRowIndex); // Agregar la nueva fila a la tabla
+            editRowIndex = -1; // Restablecer el índice de edición
             updateTotalHours(); // Actualizar el total de horas
             saveToLocalStorage(); // Guardar cambios en localStorage
             scheduleForm.reset(); // Resetear el formulario
