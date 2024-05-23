@@ -83,7 +83,7 @@ button.edit {
     background-color: green;
     color: white;
     border-radius: 15px;
-    padding: 5px 10px; /* Ajusta el relleno */
+    padding: 5px 2px; /* Ajusta el relleno */
     cursor: pointer; /* Cambia el cursor al pasar por encima */
     box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
     font-family: Piedra;
