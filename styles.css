@@ -25,7 +25,7 @@ table {
 
 /* Bordes de la tabla y celdas */
 table, th, td {
-    border: 3px solid black;
+    border: 2px solid black;
 }
 
 /* Estilos para los encabezados de la tabla y las celdas */
