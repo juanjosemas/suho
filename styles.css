@@ -66,6 +66,19 @@ button {
     box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
 }
 
+/* Estilos del botón para agregar entradas */
+button[type="submit"] {
+    margin-left: 10px;
+    font-family: Piedra;
+    font-style: italic;
+    border-radius: 15px;
+    color: white;
+    background-color: blue;
+    box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
+    padding: 8px 20px; /* Ajusta el tamaño del padding según tus preferencias */
+    font-size: 15px; /* Ajusta el tamaño del texto del botón */
+}
+
 /* Estilos específicos para el botón "Agregar" */
 button.add-button {
     margin-left: 230px;
@@ -106,8 +119,15 @@ button.edit {
     text-decoration: underline;
 }
 
+#result {
+    font-size: 22px;
+    text-decoration: underline;
+}
+
 #multiplierContainer {
     margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
 
 #multiplier {
@@ -117,12 +137,43 @@ button.edit {
     background-color: white;
     border: 2px solid black;
     box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
-    width: 100px;
+    width: 70px;
+    margin-right: 10px;
 }
 
 #result {
     font-size: 22px;
     text-decoration: underline;
+}
+
+#editMultiplier {
+    font-family: Piedra;
+    font-style: italic;
+    border-radius: 15px;
+    color: white;
+    background-color: green;
+    box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
+    font-size: 16px; /* Ajusta el tamaño de la fuente */
+    padding: 5px 10px; /* Ajusta el tamaño del padding */
+    cursor: pointer;
+}
+
+/* Agregar estos estilos para el contenedor del multiplicador y el botón */
+.multiplier-container {
+    display: flex;
+    align-items: center;
+}
+
+.multiplier-container label {
+    margin-right: 10px;
+}
+
+.multiplier-container input[type="number"] {
+    margin-right: 10px;
+}
+
+.multiplier-container button {
+    margin-left: 10px;
 }
 
 .ico {

@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalHoursElement = document.getElementById('totalHours'); // Elemento para mostrar el total de horas trabajadas
     const multiplierInput = document.getElementById('multiplier'); // Input para el multiplicador
     const resultElement = document.getElementById('result'); // Elemento para mostrar el resultado
+    const editMultiplierButton = document.getElementById('editMultiplier'); // Botón para editar el multiplicador
     let totalHours = 0; // Variable para almacenar el total de horas trabajadas
     let editRowIndex = -1; // Índice de la fila que se está editando
+    let isEditingMultiplier = false; // Estado de edición del multiplicador
 
     // Función para formatear la fecha en el formato "día/mes/año"
     function formatDate(dateString) {
@@ -39,12 +41,17 @@ document.addEventListener('DOMContentLoaded', function () {
             hours: parseFloat(row.cells[1].textContent)
         }));
         localStorage.setItem('scheduleEntries', JSON.stringify(entries));
+        localStorage.setItem('multiplier', multiplierInput.value); // Guardar el valor del multiplicador
     }
 
     // Función para cargar las entradas desde localStorage
     function loadFromLocalStorage() {
         const entries = JSON.parse(localStorage.getItem('scheduleEntries')) || [];
         entries.forEach(entry => addRowToTable(entry.day, entry.hours));
+        const storedMultiplier = localStorage.getItem('multiplier');
+        if (storedMultiplier !== null) {
+            multiplierInput.value = storedMultiplier;
+        }
         updateTotalHours();
     }
 
@@ -123,8 +130,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Manejador de eventos para el input del multiplicador
-    multiplierInput.addEventListener('input', updateResult);
+    // Manejador de eventos para el botón de editar el multiplicador
+    editMultiplierButton.addEventListener('click', function () {
+        if (isEditingMultiplier) {
+            // Guardar el nuevo valor del multiplicador
+            const newMultiplier = parseFloat(multiplierInput.value);
+            if (!isNaN(newMultiplier)) {
+                multiplierInput.value = newMultiplier.toFixed(3);
+                saveToLocalStorage();
+                updateResult();
+                multiplierInput.setAttribute('readonly', 'readonly');
+                editMultiplierButton.textContent = 'Editar';
+                isEditingMultiplier = false;
+            }
+        } else {
+            // Permitir la edición del multiplicador
+            multiplierInput.removeAttribute('readonly');
+            multiplierInput.focus();
+            editMultiplierButton.textContent = 'Guardar';
+            isEditingMultiplier = true;
+        }
+    });
 
     loadFromLocalStorage(); // Cargar datos desde localStorage cuando la página se carga
 });
