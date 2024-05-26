@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const scheduleForm = document.getElementById('scheduleForm'); // Formulario para ingresar datos
     const scheduleTable = document.getElementById('scheduleTable').getElementsByTagName('tbody')[0]; // Cuerpo de la tabla donde se agregarán las filas
     const totalHoursElement = document.getElementById('totalHours'); // Elemento para mostrar el total de horas trabajadas
+    const multiplierInput = document.getElementById('multiplier'); // Input para el multiplicador
+    const resultElement = document.getElementById('result'); // Elemento para mostrar el resultado
     let totalHours = 0; // Variable para almacenar el total de horas trabajadas
     let editRowIndex = -1; // Índice de la fila que se está editando
 
@@ -20,6 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
             return total + parseFloat(row.cells[1].textContent);
         }, 0);
         totalHoursElement.textContent = totalHours.toFixed(2);
+        updateResult();
+    }
+
+    // Función para actualizar el resultado del multiplicador
+    function updateResult() {
+        const multiplier = parseFloat(multiplierInput.value) || 0;
+        const result = totalHours * multiplier;
+        resultElement.textContent = result.toFixed(3);
     }
 
     // Función para guardar las entradas en localStorage
@@ -47,12 +57,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         dayCell.textContent = day;
         hoursCell.textContent = hours;
-        hoursCell.className = 'narrow'; // Aplicar la clase narrow a la celda de horas trabajadas
+        hoursCell.className = 'horas'; // Aplicar la clase 'horas' a la celda de horas trabajadas
 
         // Crear el botón de editar
         const editButton = document.createElement('button');
         editButton.textContent = 'Editar';
         editButton.className = 'edit'; // Clase para el botón de editar
+        editButton.setAttribute('aria-label', 'Editar entrada'); // Agregar atributo aria-label para accesibilidad
         editButton.addEventListener('click', function () {
             editRow(newRow); // Llamar a la función para editar la fila
         });
@@ -62,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Eliminar';
         deleteButton.className = 'delete'; // Clase para el botón de eliminar
+        deleteButton.setAttribute('aria-label', 'Eliminar entrada'); // Agregar atributo aria-label para accesibilidad
         deleteButton.addEventListener('click', function () {
             if (confirm('¿Estás seguro de que quieres eliminar esta entrada?')) {
                 newRow.remove(); // Eliminar la fila correspondiente
@@ -110,6 +122,9 @@ document.addEventListener('DOMContentLoaded', function () {
             scheduleForm.reset(); // Resetear el formulario
         }
     });
+
+    // Manejador de eventos para el input del multiplicador
+    multiplierInput.addEventListener('input', updateResult);
 
     loadFromLocalStorage(); // Cargar datos desde localStorage cuando la página se carga
 });

@@ -10,7 +10,7 @@ body {
     position: relative;
 }
 
-.titulo{
+.titulo {
     text-align: right;
     font-size: 30px;
     margin-top: -40px;
@@ -23,12 +23,10 @@ table {
     margin-bottom: 20px;
 }
 
-/* Bordes de la tabla y celdas */
 table, th, td {
     border: 2px solid black;
 }
 
-/* Estilos para los encabezados de la tabla y las celdas */
 th, td {
     padding: 2px;
     text-align: center;
@@ -36,9 +34,8 @@ th, td {
     font-weight: bolder;
 }
 
-/* Estilos específicos para la columna de horas trabajadas */
-th.narrow, td.narrow {
-    width: 80px; /* Ajusta este valor según tus necesidades */
+th.horas, td.horas {
+    width: 80px;
 }
 
 /* Estilos del formulario */
@@ -46,18 +43,19 @@ form {
     margin-bottom: 20px;
 }
 
-/* Espaciado entre las etiquetas y los campos del formulario */
 label {
     margin-right: 10px;
 }
 
-/* Estilos del campo de entrada para las horas trabajadas */
-input[type="number"] {
-    width: 60px; /* Hacer el campo más pequeño */
+input[type="number"], input[type="date"] {
     font-family: Lobster;
+    font-size: 20px;
+    border-radius: 15px;
+    background-color: white;
+    border: 2px solid black;
+    box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
 }
 
-/* Estilos del botón para agregar entradas */
 button {
     margin-left: 10px;
     font-family: Piedra;
@@ -68,7 +66,21 @@ button {
     box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
 }
 
-/* Estilos del botón de eliminar */
+/* Estilos específicos para el botón "Agregar" */
+button.add-button {
+    margin-left: 230px;
+    font-family: Piedra;
+    font-style: italic;
+    border-radius: 15px;
+    color: white;
+    background-color: blue;
+    box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
+    font-size: 20px; /* Aumenta el tamaño de la fuente */
+    padding: 1px 8px; /* Aumenta el tamaño del padding */
+    width: auto; /* Ajusta el ancho del botón */
+    height: auto; /* Ajusta la altura del botón */
+}
+
 button.delete {
     background-color: red;
     color: white;
@@ -78,63 +90,59 @@ button.delete {
     box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
 }
 
-/* Estilos del botón de editar */
 button.edit {
     background-color: green;
     color: white;
     border-radius: 15px;
-    padding: 5px 2px; /* Ajusta el relleno */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    padding: 5px 2px;
+    cursor: pointer;
     box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
     font-family: Piedra;
     font-style: italic;
 }
 
-/* Suma de las horas */
-#totalHours{
+#totalHours {
     font-size: 22px;
     text-decoration: underline;
 }
 
-/* formato del dia de la semana */
-#day{
-    font-family: Lobster;
-    border-radius: 15px;
-    background-color: white;
-    border: 2px solid black;
-    box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
-    font-size: 18px;
+#multiplierContainer {
+    margin-top: 20px;
 }
 
-/* formato de horas trabajadas */
-#hours{
+#multiplier {
     font-family: Lobster;
     font-size: 20px;
     border-radius: 15px;
     background-color: white;
     border: 2px solid black;
     box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
+    width: 100px;
 }
-     
-     /* Logo de la pagina */
+
+#result {
+    font-size: 22px;
+    text-decoration: underline;
+}
+
 .ico {
-  border-radius: 50%;
-  margin: 0;
-  animation-name: logo;
-  animation-duration: 3s;
-  transition: all 0.5s ease-in-out;
-  background-color: black;
-  border: 2px solid red;
-  box-shadow: 0 0 0 3px black;
+    border-radius: 50%;
+    margin: 0;
+    animation-name: logo;
+    animation-duration: 3s;
+    transition: all 0.5s ease-in-out;
+    background-color: black;
+    border: 2px solid red;
+    box-shadow: 0 0 0 3px black;
 }
 
 @keyframes logo {
-  from {
-    opacity: 0;
-    transform: scale(0.5) rotate(0deg);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) rotate(1440deg);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.5) rotate(0deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(1440deg);
+    }
 }
