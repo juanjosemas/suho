@@ -68,7 +68,7 @@ button {
 
 /* Estilos del botón para agregar entradas */
 button[type="submit"] {
-    margin-left: 10px;
+    margin-left: 230px;
     font-family: Piedra;
     font-style: italic;
     border-radius: 15px;
@@ -79,20 +79,7 @@ button[type="submit"] {
     font-size: 15px; /* Ajusta el tamaño del texto del botón */
 }
 
-/* Estilos específicos para el botón "Agregar" */
-button.add-button {
-    margin-left: 230px;
-    font-family: Piedra;
-    font-style: italic;
-    border-radius: 15px;
-    color: white;
-    background-color: blue;
-    box-shadow: 2px 4px 4px 4px rgba(71, 71, 71, 0.70);
-    font-size: 20px; /* Aumenta el tamaño de la fuente */
-    padding: 1px 8px; /* Aumenta el tamaño del padding */
-    width: auto; /* Ajusta el ancho del botón */
-    height: auto; /* Ajusta la altura del botón */
-}
+
 
 button.delete {
     background-color: red;
