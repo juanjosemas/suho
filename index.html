@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Horas - Estilo Excel</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Enlace para fuentes de google -->
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&displayfamily=Amatic+SC:wght@700&family=Caveat:wght@700&family=Dancing+Script:wght@700&family=Lobster&family=Metal+Mania&family=Yellowtail& family=Permanent+Marker&family=Piedra&family=Sriracha&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="container">
+        <h1>HORAS TRABAJADAS</h1>
+
+        <div class="formulario-entrada">
+            <div class="campo" id="campoFechaWrapper">
+                <label for="inputFecha">Fecha:</label>
+                <input type="date" id="inputFecha">
+            </div>
+            <div class="grupo-horas-agregar">
+                <div class="campo" id="campoHorasWrapper">
+                    <label for="inputHoras">Horas:</label>
+                    <input type="number" id="inputHoras" placeholder="horas" step="0.5" min="0">
+                </div>
+                <button id="btnAgregar" title="Agregar Entrada">Agregar</button>
+            </div>
+        </div>
+
+        <table id="tablaEntradas">
+            <thead>
+                <tr>
+                    <th>FECHA</th>
+                    <th>HORAS</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las filas se insertarán aquí -->
+            </tbody>
+        </table>
+
+        <div class="seccion-resumen">
+            <h2>Resumen y Cálculos</h2>
+            <div class="resumen-fila">
+                <span class="resumen-label">MULTIPLICADOR:</span>
+                <span id="displayMultiplicador" class="valor-editable" title="Doble clic para editar">1.00</span>
+                <input type="number" id="inputMultiplicador" class="input-editable" step="0.01" style="display:none;">
+            </div>
+            <div class="resumen-fila">
+                <span class="resumen-label">SUMA DE LAS HORAS:</span>
+                <span id="displaySumaHoras" class="valor-calculado">0.00</span>
+            </div>
+            <div class="resumen-fila">
+                <span class="resumen-label">TOTAL:</span>
+                <span id="displayTotalFinal" class="valor-calculado gran-total">0.00</span>
+            </div>
+            <button id="btnResetTodo" class="btn-peligro">Reiniciar Todo</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

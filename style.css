@@ -1,0 +1,342 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #eef2f7;
+    color: #333;
+    font-size: 14px;
+     /* Propiedades para la imagen de fondo */
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('img/nubes.jpg');
+    background-repeat: no-repeat; /* No repetir la imagen */
+    background-position: center center; /* Centrar la imagen horizontal y verticalmente */
+    background-attachment: fixed; /* La imagen de fondo se queda fija al hacer scroll */
+    background-size: cover; /* Escala la imagen para cubrir todo el body */
+}
+}
+
+.container {
+    max-width: 700px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+/* --- Formulario de Entrada Principal --- */
+.formulario-entrada {
+    display: flex;
+    gap: 15px; /* Espacio entre el campo de Fecha y el grupo (Horas+Botón) */
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f9fafb;
+    border-radius: 6px;
+    align-items: flex-end; /* Alinear verticalmente los elementos al final */
+    border: 1px solid #dfe6ec;
+}
+
+/* Contenedor del campo de Fecha */
+#campoFechaWrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Permite que el campo de fecha ocupe el espacio restante */
+}
+
+/* Grupo para Horas y Botón Agregar */
+.grupo-horas-agregar {
+    display: flex;
+    align-items: flex-end; /* Alinear input de horas y botón */
+    gap: 8px; /* Espacio entre input de horas y botón */
+    flex-shrink: 0; /* Evita que este grupo se encoja si no hay espacio */
+}
+
+/* Contenedor del campo de Horas */
+#campoHorasWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.formulario-entrada label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+    font-size: 0.9em; /* Etiqueta un poco más pequeña */
+}
+
+/* Inputs generales dentro del formulario */
+.formulario-entrada input[type="date"],
+.formulario-entrada input[type="number"] {
+    padding: 8px; /* Padding reducido para hacerlo más compacto */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95em; /* Fuente un poco más pequeña */
+}
+
+/* Input de Fecha Específico */
+#inputFecha {
+    min-width: 150px; /* Un mínimo para que el calendario se vea bien */
+}
+
+/* Input de Horas Específico */
+#inputHoras {
+    width: 60px; /* Ancho reducido para el input de horas */
+    text-align: center;
+}
+
+/* Botón Agregar Específico */
+#btnAgregar {
+    padding: 8px 12px; /* Padding reducido */
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em; /* Fuente del botón un poco más pequeña */
+    transition: background-color 0.2s ease-in-out;
+    white-space: nowrap;
+    height: 35px; /* Altura ajustada al nuevo padding de los inputs */
+}
+#btnAgregar:hover {
+    background-color: #218838;
+}
+
+
+/* --- Tabla de Entradas --- */
+#tablaEntradas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#tablaEntradas thead, #tablaEntradas tbody, #tablaEntradas tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#tablaEntradas th, #tablaEntradas td {
+    border: 1px solid #dfe6ec;
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#tablaEntradas th:nth-child(1), #tablaEntradas td:nth-child(1) { width: 35%; } /* Fecha */
+#tablaEntradas th:nth-child(2), #tablaEntradas td:nth-child(2) { width: 25%; } /* Horas */
+#tablaEntradas th:nth-child(3), #tablaEntradas td:nth-child(3) { width: 40%; } /* Acciones */
+
+#tablaEntradas th {
+    background-color: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+#tablaEntradas td {
+    background-color: #fff;
+}
+
+#tablaEntradas tr:nth-child(even) td {
+    background-color: #f8fafc;
+}
+
+#tablaEntradas .acciones-btn {
+    padding: 6px 10px;
+    margin-right: 6px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: opacity 0.2s;
+}
+#tablaEntradas .acciones-btn:hover {
+    opacity: 0.8;
+}
+
+.btn-editar {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.btn-borrar {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* --- Sección de Resumen --- */
+.seccion-resumen {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #dfe6ec;
+}
+
+.seccion-resumen h2 {
+    font-size: 1.3em;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+}
+
+.resumen-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e0e0e0;
+}
+
+.resumen-label {
+    font-weight: 500;
+    color: #444;
+}
+
+.valor-calculado, .valor-editable {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.valor-editable {
+    color: #007bff;
+    cursor: pointer;
+    padding: 3px 6px;
+    border-bottom: 1px dashed #007bff;
+}
+.valor-editable:hover {
+    background-color: #e7f3ff;
+}
+
+.input-editable {
+    padding: 6px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-size: 1em;
+    width: 80px;
+    text-align: right;
+}
+
+.gran-total {
+    color: #28a745;
+    font-size: 1.3em;
+}
+
+.btn-peligro {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-peligro:hover {
+    background-color: #c82333;
+}
+
+/* --- AJUSTES PARA MÓVILES --- */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .container {
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    /* Formulario de entrada en móvil */
+    .formulario-entrada {
+        flex-direction: column; /* Apila el campo de Fecha y el grupo (Horas+Botón) */
+        align-items: stretch; /* Estira los hijos al ancho completo */
+        gap: 10px; /* Espacio vertical entre Fecha y el grupo */
+    }
+
+    #campoFechaWrapper {
+        width: 100%; /* El wrapper de fecha ocupa todo el ancho */
+    }
+    #inputFecha {
+        width: 100%; /* El input de fecha ocupa todo el ancho de su wrapper */
+        box-sizing: border-box;
+    }
+
+    .grupo-horas-agregar {
+        width: 100%; /* El grupo (Horas+Botón) ocupa todo el ancho */
+        gap: 10px; /* Espacio entre input de horas y botón en móvil */
+    }
+    
+    #campoHorasWrapper {
+        flex-grow: 1; /* El wrapper de horas crece para ocupar espacio dentro del grupo */
+    }
+    #inputHoras {
+        width: 100%; /* El input de horas ocupa todo el ancho de su wrapper */
+        box-sizing: border-box;
+        font-size: 1.05em; /* Un poco más grande para el toque */
+        padding: 10px; /* Más padding para el toque */
+    }
+
+    #btnAgregar {
+        flex-shrink: 0; /* Evita que el botón se encoja */
+        font-size: 1em; /* Tamaño de fuente del botón */
+        padding: 10px 15px; /* Más padding para el toque */
+        height: auto; /* Altura automática basada en padding y contenido */
+    }
+
+
+    #tablaEntradas th, #tablaEntradas td {
+        padding: 8px 6px;
+        font-size: 0.95em;
+    }
+    #tablaEntradas .acciones-btn {
+        padding: 6px 8px;
+        font-size: 0.85em;
+        margin-right: 4px;
+    }
+
+    .seccion-resumen {
+        padding: 15px;
+    }
+    .seccion-resumen h2 {
+        font-size: 1.2em;
+    }
+    .resumen-fila {
+        padding: 8px 0;
+        flex-wrap: wrap;
+    }
+    .resumen-label {
+        margin-bottom: 4px;
+    }
+    .valor-calculado, .valor-editable {
+        font-size: 1.05em;
+    }
+    .gran-total {
+        font-size: 1.25em;
+    }
+    .input-editable {
+        width: 70px;
+        font-size: 1em;
+    }
+}
