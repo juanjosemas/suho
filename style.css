@@ -35,7 +35,7 @@ h1 {
 .ico {
     float: left;
     margin-left: 10px;
-    margin-top: -40px;
+    margin-top: 0;
     border-radius: 50%;
     animation-name: logo;
     animation-duration: 3s;
