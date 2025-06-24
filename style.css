@@ -12,7 +12,7 @@ body {
     background-attachment: fixed; /* La imagen de fondo se queda fija al hacer scroll */
     background-size: cover; /* Escala la imagen para cubrir todo el body */
 }
-}
+
 
 .container {
     max-width: 700px;
@@ -31,6 +31,31 @@ h1 {
     border-bottom: 2px solid #3498db;
     padding-bottom: 10px;
 }
+
+.ico {
+    float: left;
+    margin-left: 10px;
+    margin-top: -40px;
+    border-radius: 50%;
+    animation-name: logo;
+    animation-duration: 3s;
+    transition: all 0.5s ease-in-out;
+    background-color: black;
+    border: 2px solid red;
+    box-shadow: 0 0 0 3px black;
+}
+
+@keyframes logo {
+    from {
+        opacity: 0;
+        transform: scale(0.5) rotate(0deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(1440deg);
+    }
+}
+
 
 /* --- Formulario de Entrada Principal --- */
 .formulario-entrada {
