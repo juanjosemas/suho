@@ -1,11 +1,11 @@
-/* --- INICIO DEL CÓDIGO CSS COMPLETO --- */
+
 body {
     /* Estilos generales del cuerpo de la página */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente principal por defecto */
+    font-family: Piedra; /* Fuente principal por defecto */
     margin: 0; /* Sin margen exterior */
     padding: 20px; /* Espaciado interior */
     /* background-color: #eef2f7;  Ya no es tan necesario si la imagen cubre todo */
-    color: #333; /* Color de texto principal */
+    color: black; /* Color de texto principal */
     font-size: 14px; /* Tamaño de fuente base */
      /* Propiedades para la imagen de fondo */
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('img/nubes.jpg'); /* Imagen de fondo con un ligero degradado encima */
