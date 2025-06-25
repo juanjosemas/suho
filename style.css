@@ -178,12 +178,12 @@ h1 {
 
 /* --- MODIFICACIÓN: BOTONES DE ACCIÓN MÁS PEQUEÑOS (ESCRITORIO) --- */
 #tablaEntradas .acciones-btn {
-    padding: 3px 6px;   /* Reducido para hacer el botón más compacto */
-    margin-right: 4px;  /* Margen entre botones */
+    padding: 10px 16px;   /* Reducido para hacer el botón más compacto */
+    margin-right: 20px;  /* Margen entre botones */
     border: none; 
     border-radius: 30px; 
     cursor: pointer; 
-    font-size: 0.7em;   /* Tamaño de fuente del texto del botón muy reducido */
+    font-size: 1em;   /* Tamaño de fuente del texto del botón muy reducido */
     transition: opacity 0.2s; 
     font-family: Caveat;
     font-weight: 900;
@@ -242,7 +242,7 @@ h1 {
 
 .valor-calculado, .valor-editable {
     font-weight: bold; 
-    font-size: 2em; 
+    font-size: 1.6em; 
     font-family: Piedra;
 }
 
@@ -287,6 +287,12 @@ h1 {
 .btn-peligro:hover {
     background-color: #c82333; 
 }
+
+
+
+
+
+
 
 /* --- AJUSTES PARA MÓVILES --- */
 @media (max-width: 600px) {
@@ -353,9 +359,9 @@ h1 {
 
     /* --- MODIFICACIÓN: BOTONES DE ACCIÓN MÁS PEQUEÑOS (MÓVIL) --- */
     #tablaEntradas .acciones-btn {
-        padding: 2px 4px;   /* Aún más compacto para móviles */
-        font-size: 0.65em;  /* Texto muy pequeño, verifica legibilidad */
-        margin-right: 2px;  /* Margen mínimo */
+        padding: 8px 9px;   /* Aún más compacto para móviles */
+        font-size: 0.8em;  /* Texto muy pequeño, verifica legibilidad */
+        margin-right: 14px;  /* Margen mínimo */
     }
 
     .seccion-resumen {
@@ -374,14 +380,14 @@ h1 {
         font-size: 0.95em; /* Ajusta para legibilidad */
     }
     .valor-calculado, .valor-editable {
-        font-size: 1em; /* Ajusta para legibilidad */
+        font-size: 1.3em; /* Ajusta para legibilidad */
     }
     .gran-total {
-        font-size: 1.15em; /* Ajusta para legibilidad */
+        font-size: 1.5em; /* Ajusta para legibilidad */
     }
     .input-editable {
         width: 90px; 
-        font-size: 0.95em; /* Ajusta para legibilidad */
+        font-size: 1.3em; /* Ajusta para legibilidad */
         background-color: rgba(255, 255, 255, 0.7);
     }
 }
