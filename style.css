@@ -108,7 +108,7 @@ h1 {
 }
 
 #inputHoras {
-    width: 60px; 
+    width: 100px; 
     text-align: center; 
 }
 
@@ -213,10 +213,11 @@ h1 {
     background-color: rgba(249, 250, 251, 0.20); /* Tu valor de transparencia */
     border-radius: 6px; 
     border: 1px solid rgba(223, 230, 236, 0.20); 
+    text-decoration: underline;
 }
 
 .seccion-resumen h2 {
-    font-size: 1.3em; 
+    font-size: 1.8em; 
     color: #2c3e50; 
     margin-top: 0; 
     margin-bottom: 15px; 
@@ -332,7 +333,7 @@ h1 {
     #inputFecha { width: 100%; box-sizing: border-box; }
     .grupo-horas-agregar { width: 100%; gap: 10px; }
     #campoHorasWrapper { flex-grow: 1; }
-    #inputHoras { width: 100%; box-sizing: border-box; font-size: 1.05em; padding: 10px; }
+    #inputHoras { width: 70%; box-sizing: border-box; font-size: 1.05em; padding: 10px; }
     #btnAgregar { flex-shrink: 0; font-size: 1em; padding: 10px 15px; height: auto; }
 
     #tablaEntradas th:nth-child(1), 
@@ -369,7 +370,7 @@ h1 {
         background-color: rgba(249, 250, 251, 0.30); /* Tu valor móvil */
     }
     .seccion-resumen h2 {
-        font-size: 1.2em; 
+        font-size: 1.5em; 
     }
     .resumen-fila {
         padding: 8px 0; 
