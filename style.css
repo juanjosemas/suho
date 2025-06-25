@@ -70,7 +70,7 @@ h1 {
 #campoFechaWrapper {
     display: flex; 
     flex-direction: column; 
-    flex-grow: 1; 
+    flex-grow: 1;
 }
 
 .grupo-horas-agregar {
@@ -108,11 +108,13 @@ h1 {
 #inputFecha {
     min-width: 150px; 
    font-family: Piedra; /*Considera si es legible aquí */
+   border-radius: 30px;
 }
 
 #inputHoras {
     width: 100px; 
     text-align: center; 
+    border-radius: 30px;
 }
 
 #btnAgregar {
@@ -120,7 +122,7 @@ h1 {
     background-color: blue; 
     color: white; 
     border: none; 
-    border-radius: 40px; 
+    border-radius: 30px; 
     cursor: pointer; 
     font-size: 0.9em; 
     transition: background-color 0.2s ease-in-out; 
@@ -338,7 +340,7 @@ h1 {
 
 
     #campoFechaWrapper { width: 100%; }
-    #inputFecha { width: 100%; box-sizing: border-box; }
+    #inputFecha { width: 100%; box-sizing: border-box; border-radius: 30px;}
     .grupo-horas-agregar { width: 100%; gap: 10px; }
     #campoHorasWrapper { flex-grow: 1; }
     #inputHoras { width: 70%; box-sizing: border-box; font-size: 1.05em; padding: 10px; }
