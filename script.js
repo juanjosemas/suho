@@ -8,223 +8,245 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elementos del DOM - Resumen
     const displayMultiplicador = document.getElementById('displayMultiplicador');
-    const inputMultiplicador = document.getElementById('inputMultiplicador'); // Input para editar el multiplicador
+    const inputMultiplicador = document.getElementById('inputMultiplicador');
     const displaySumaHoras = document.getElementById('displaySumaHoras');
     const displayTotalFinal = document.getElementById('displayTotalFinal');
     const btnResetTodo = document.getElementById('btnResetTodo');
 
-    let entradas = []; // Array para almacenar los objetos de cada entrada (fecha, horas, id)
-    let multiplicador = 1.000; // Valor inicial del multiplicador, ahora con 3 decimales
+    let entradas = [];
+    let multiplicador = 1.000;
 
     // --- CARGAR DATOS ---
-    // Función para cargar los datos guardados en localStorage al iniciar la página
     function cargarDatos() {
         const entradasGuardadas = localStorage.getItem('horasTrabajadas_entradas');
         if (entradasGuardadas) {
-            entradas = JSON.parse(entradasGuardadas); // Convierte el string JSON de vuelta a un array de objetos
+            entradas = JSON.parse(entradasGuardadas);
         }
         const multiplicadorGuardado = localStorage.getItem('horasTrabajadas_multiplicador');
         if (multiplicadorGuardado) {
-            multiplicador = parseFloat(multiplicadorGuardado); // Convierte el string a número flotante
+            multiplicador = parseFloat(multiplicadorGuardado);
         }
-        renderizarTabla(); // Actualiza la tabla en la página con los datos cargados
-        actualizarResumen(); // Actualiza los cálculos del resumen
-        displayMultiplicador.textContent = multiplicador.toFixed(3); // Muestra el multiplicador con 3 decimales
+        renderizarTabla();
+        actualizarResumen();
+        displayMultiplicador.textContent = multiplicador.toFixed(3);
     }
 
     // --- GUARDAR DATOS ---
-    // Función para guardar el estado actual de las entradas y el multiplicador en localStorage
     function guardarDatos() {
-        localStorage.setItem('horasTrabajadas_entradas', JSON.stringify(entradas)); // Convierte el array a string JSON
-        localStorage.setItem('horasTrabajadas_multiplicador', multiplicador.toString()); // Convierte el número a string
+        localStorage.setItem('horasTrabajadas_entradas', JSON.stringify(entradas));
+        localStorage.setItem('horasTrabajadas_multiplicador', multiplicador.toString());
     }
 
-    // --- FORMATEAR FECHA (para mostrar como DD/MM/YY) ---
-    // Función para cambiar el formato de fecha de YYYY-MM-DD a DD/MM/YY
-    function formatearFecha(fechaString) { 
-        if (!fechaString) return ''; // Si no hay fecha, devuelve string vacío
-        const [year, month, day] = fechaString.split('-'); // Divide la fecha en partes
-        return `${day}/${month}/${year.slice(-2)}`; // Recompone en formato DD/MM/YY (usando los últimos 2 dígitos del año)
+    // --- FORMATEAR FECHA ---
+    function formatearFecha(fechaString) {
+        if (!fechaString) return '';
+        const [year, month, day] = fechaString.split('-');
+        return `${day}/${month}/${year.slice(-2)}`;
     }
     
     // --- RENDERIZAR TABLA ---
-    // Función para dibujar/actualizar la tabla de entradas en el HTML
     function renderizarTabla() {
-        tablaEntradasBody.innerHTML = ''; // Limpia el contenido actual de la tabla
-        entradas.forEach((entrada) => { // Itera sobre cada objeto 'entrada' en el array 'entradas'
-            const fila = tablaEntradasBody.insertRow(); // Crea una nueva fila <tr>
-            fila.dataset.id = entrada.id; // Asigna el ID de la entrada al atributo data-id de la fila (útil para editar/borrar)
+        tablaEntradasBody.innerHTML = '';
+        entradas.forEach((entrada) => {
+            const fila = tablaEntradasBody.insertRow();
+            fila.dataset.id = entrada.id;
 
-            fila.insertCell().textContent = formatearFecha(entrada.fecha); // Inserta celda para la fecha formateada
-            // --- CAMBIO: HORAS EN TABLA A 1 DECIMAL ---
-            fila.insertCell().textContent = parseFloat(entrada.horas).toFixed(1); // Inserta celda para las horas, formateadas a 1 decimal
+            fila.insertCell().textContent = formatearFecha(entrada.fecha);
+            fila.insertCell().textContent = parseFloat(entrada.horas).toFixed(1);
             
-            const celdaAcciones = fila.insertCell(); // Inserta celda para los botones de acciones
-            const btnEditar = document.createElement('button'); // Crea el botón de editar
+            const celdaAcciones = fila.insertCell();
+            const btnEditar = document.createElement('button');
             btnEditar.textContent = 'EDITAR';
-            btnEditar.classList.add('acciones-btn', 'btn-editar'); // Añade clases CSS para estilo
-            btnEditar.onclick = () => editarEntrada(entrada.id); // Asigna la función de editar al hacer clic
+            btnEditar.classList.add('acciones-btn', 'btn-editar');
+            btnEditar.onclick = () => editarEntrada(entrada.id);
             
-            const btnBorrar = document.createElement('button'); // Crea el botón de borrar
+            const btnBorrar = document.createElement('button');
             btnBorrar.textContent = 'BORRAR';
-            btnBorrar.classList.add('acciones-btn', 'btn-borrar'); // Añade clases CSS
-            btnBorrar.onclick = () => borrarEntrada(entrada.id); // Asigna la función de borrar al hacer clic
+            btnBorrar.classList.add('acciones-btn', 'btn-borrar');
+            btnBorrar.onclick = () => borrarEntrada(entrada.id);
 
-            celdaAcciones.appendChild(btnEditar); // Añade el botón de editar a la celda de acciones
-            celdaAcciones.appendChild(btnBorrar); // Añade el botón de borrar a la celda de acciones
+            celdaAcciones.appendChild(btnEditar);
+            celdaAcciones.appendChild(btnBorrar);
         });
     }
 
     // --- ACTUALIZAR RESUMEN ---
-    // Función para recalcular y mostrar la suma de horas, y el total final
     function actualizarResumen() {
-        const sumaHoras = entradas.reduce((acc, curr) => acc + parseFloat(curr.horas), 0); // Suma todas las horas de las entradas
-        const totalFinal = sumaHoras * multiplicador; // Calcula el total multiplicando suma de horas por el multiplicador
-
-        // --- CAMBIO: SUMA DE HORAS A 1 DECIMAL ---
-        displaySumaHoras.textContent = sumaHoras.toFixed(1); // Muestra la suma de horas formateada a 1 decimal
-        displayTotalFinal.textContent = totalFinal.toFixed(3); // Muestra el total final formateado a 3 decimales
+        const sumaHoras = entradas.reduce((acc, curr) => acc + parseFloat(curr.horas), 0);
+        const totalFinal = sumaHoras * multiplicador;
+        displaySumaHoras.textContent = sumaHoras.toFixed(1);
+        displayTotalFinal.textContent = totalFinal.toFixed(3);
     }
 
-    // --- AGREGAR ENTRADA ---
-    // Event listener para el botón 'Agregar'
-    btnAgregar.addEventListener('click', () => {
-        const fecha = inputFecha.value; // Obtiene el valor del input de fecha
-        const horas = parseFloat(inputHoras.value); // Obtiene y convierte a número las horas del input
+    // --- FUNCIÓN REUTILIZABLE PARA PROCESAR LA ENTRADA ---
+    // Esta función contiene la lógica de validación y agregado que antes estaba solo en el click del botón.
+    function procesarNuevaEntrada() {
+        const fecha = inputFecha.value;
+        const horas = parseFloat(inputHoras.value);
 
-        if (!fecha) { // Validación: si no hay fecha
+        if (!fecha) {
             alert('Por favor, selecciona una fecha.');
-            return; // Detiene la ejecución de la función
+            inputFecha.focus(); // Devuelve el foco al campo de fecha si está vacío
+            return false; // Indica que la validación falló
         }
-        if (isNaN(horas) || horas <= 0) { // Validación: si las horas no son un número válido o son cero o negativas
+        if (isNaN(horas) || horas <= 0) {
             alert('Por favor, introduce un número de horas válido.');
-            return; // Detiene la ejecución
+            inputHoras.focus(); // Mantiene el foco en el campo de horas
+            inputHoras.select(); // Selecciona el contenido para fácil corrección
+            return false; // Indica que la validación falló
         }
 
-        const nuevaEntrada = { // Crea un nuevo objeto para la entrada
-            id: Date.now(), // ID único basado en la fecha y hora actual (timestamp)
+        const nuevaEntrada = {
+            id: Date.now(),
             fecha: fecha,
             horas: horas
         };
-        entradas.push(nuevaEntrada); // Añade la nueva entrada al array 'entradas'
+        entradas.push(nuevaEntrada);
         
-        renderizarTabla(); // Actualiza la tabla en pantalla
-        actualizarResumen(); // Actualiza los cálculos del resumen
-        guardarDatos(); // Guarda los datos en localStorage
+        renderizarTabla();
+        actualizarResumen();
+        guardarDatos();
 
-        inputHoras.value = ''; // Limpia el input de horas
-        inputHoras.focus(); // Pone el foco de nuevo en el input de horas para facilitar la siguiente entrada
+        inputHoras.value = ''; // Limpiar input de horas
+        
+        // --- CAMBIO: OCULTAR TECLADO (DESENFOCANDO EL INPUT ACTIVO) ---
+        // La forma más simple de intentar ocultar el teclado es quitar el foco del input.
+        // Si el foco estaba en inputHoras, desenfocarlo.
+        // Si el foco pasó al botón "Agregar" (en caso de clic), el teclado usualmente se oculta.
+        // Si fue por Enter en inputHoras, desenfocarlo es clave.
+        if (document.activeElement === inputHoras || document.activeElement === inputFecha) {
+            document.activeElement.blur(); 
+        }
+        // No siempre es necesario devolver el foco a inputFecha, puede ser mejor no tener foco
+        // inputFecha.focus(); // Opcional: devolver el foco al campo de fecha para la siguiente entrada
+
+        return true; // Indica que la entrada fue procesada exitosamente
+    }
+
+    // --- AGREGAR ENTRADA (POR CLIC EN BOTÓN) ---
+    btnAgregar.addEventListener('click', () => {
+        procesarNuevaEntrada();
+        // El teclado debería ocultarse naturalmente al hacer clic en un botón que no es un input.
+        // Si no es así, la llamada a .blur() dentro de procesarNuevaEntrada (si el foco estaba en un input) ayudará.
     });
 
-    // --- EDITAR ENTRADA ---
-    // Función para editar una entrada existente (se llama desde el botón 'EDITAR' de una fila)
-    function editarEntrada(id) {
-        const entrada = entradas.find(e => e.id === id); // Busca la entrada en el array por su ID
-        if (!entrada) return; // Si no se encuentra la entrada, no hace nada
+    // --- CAMBIO: AGREGAR ENTRADA CON TECLA "INTRO" EN EL CAMPO DE HORAS ---
+    inputHoras.addEventListener('keypress', (event) => {
+        // 'Enter' tiene keyCode 13 o key 'Enter'
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            event.preventDefault(); // Prevenir el comportamiento por defecto (ej. submit de formulario si existiera)
+            procesarNuevaEntrada(); // Llama a la misma lógica que el botón agregar
+        }
+    });
 
-        // Pide al usuario la nueva fecha
+    // --- CAMBIO: PERMITIR "INTRO" EN FECHA PARA PASAR A HORAS (OPCIONAL MEJORA UX) ---
+    inputFecha.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            event.preventDefault();
+            inputHoras.focus(); // Mueve el foco al campo de horas
+        }
+    });
+
+
+    // --- EDITAR ENTRADA ---
+    function editarEntrada(id) {
+        const entrada = entradas.find(e => e.id === id);
+        if (!entrada) return;
+
         const nuevaFecha = prompt(`Editar fecha (YYYY-MM-DD) para ${formatearFecha(entrada.fecha)}:`, entrada.fecha);
-        if (nuevaFecha !== null && !/^\d{4}-\d{2}-\d{2}$/.test(nuevaFecha)) { // Validación del formato de fecha
+        if (nuevaFecha !== null && !/^\d{4}-\d{2}-\d{2}$/.test(nuevaFecha)) {
             alert("Formato de fecha incorrecto. Debe ser YYYY-MM-DD.");
             return;
         }
 
-        // Pide al usuario las nuevas horas
         const nuevasHorasStr = prompt(`Editar horas para ${formatearFecha(nuevaFecha || entrada.fecha)} (actual: ${entrada.horas}):`, entrada.horas);
         const nuevasHoras = parseFloat(nuevasHorasStr);
 
-        if (nuevaFecha !== null) entrada.fecha = nuevaFecha; // Actualiza la fecha si el usuario ingresó algo
-        
-        // Actualiza las horas si el usuario ingresó un valor válido
+        if (nuevaFecha !== null) entrada.fecha = nuevaFecha;
         if (nuevasHorasStr !== null && !isNaN(nuevasHoras) && nuevasHoras > 0) {
             entrada.horas = nuevasHoras;
-        } else if (nuevasHorasStr !== null) { // Si ingresó algo pero no es válido
+        } else if (nuevasHorasStr !== null) {
             alert('Valor de horas inválido.');
-            return; 
+            return;
         }
         
-        renderizarTabla(); // Actualiza la tabla
-        actualizarResumen(); // Actualiza el resumen
-        guardarDatos(); // Guarda los cambios
+        renderizarTabla();
+        actualizarResumen();
+        guardarDatos();
     }
 
     // --- BORRAR ENTRADA ---
-    // Función para borrar una entrada (se llama desde el botón 'BORRAR' de una fila)
     function borrarEntrada(id) {
-        if (confirm('¿Estás seguro de que quieres borrar esta entrada?')) { // Pide confirmación al usuario
-            entradas = entradas.filter(e => e.id !== id); // Crea un nuevo array excluyendo la entrada con el ID a borrar
-            renderizarTabla(); // Actualiza la tabla
-            actualizarResumen(); // Actualiza el resumen
-            guardarDatos(); // Guarda los cambios
+        if (confirm('¿Estás seguro de que quieres borrar esta entrada?')) {
+            entradas = entradas.filter(e => e.id !== id);
+            renderizarTabla();
+            actualizarResumen();
+            guardarDatos();
         }
     }
 
     // --- EDITAR MULTIPLICADOR ---
-    // Event listener para hacer editable el multiplicador con doble clic
     displayMultiplicador.addEventListener('dblclick', () => {
-        displayMultiplicador.style.display = 'none'; // Oculta el span que muestra el valor
-        inputMultiplicador.style.display = 'inline-block'; // Muestra el input para editar
-        // --- CAMBIO: MULTIPLICADOR INPUT A 3 DECIMALES ---
-        inputMultiplicador.value = multiplicador.toFixed(3); // Pone el valor actual en el input, con 3 decimales
-        inputMultiplicador.focus(); // Pone el foco en el input
-        inputMultiplicador.select(); // Selecciona el texto del input
+        displayMultiplicador.style.display = 'none';
+        inputMultiplicador.style.display = 'inline-block';
+        inputMultiplicador.value = multiplicador.toFixed(3);
+        inputMultiplicador.focus();
+        inputMultiplicador.select();
     });
 
-    // Event listeners para guardar el nuevo multiplicador cuando el input pierde el foco o se presiona Enter
     inputMultiplicador.addEventListener('blur', guardarNuevoMultiplicador);
     inputMultiplicador.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Evita el comportamiento por defecto de Enter en un formulario
+        if (event.key === 'Enter' || event.keyCode === 13) {
+            event.preventDefault();
             guardarNuevoMultiplicador();
         }
     });
 
-    // Función para guardar el nuevo valor del multiplicador
     function guardarNuevoMultiplicador() {
-        const nuevoValor = parseFloat(inputMultiplicador.value); // Obtiene y convierte el valor del input
-        if (!isNaN(nuevoValor) && nuevoValor >= 0) { // Validación: si es un número válido y no negativo
+        const nuevoValor = parseFloat(inputMultiplicador.value);
+        if (!isNaN(nuevoValor) && nuevoValor >= 0) {
             multiplicador = nuevoValor;
         } else {
             alert("Por favor, introduce un valor multiplicador numérico válido.");
         }
-        // --- CAMBIO: MULTIPLICADOR DISPLAY A 3 DECIMALES ---
-        displayMultiplicador.textContent = multiplicador.toFixed(3); // Muestra el nuevo multiplicador con 3 decimales
-        displayMultiplicador.style.display = 'inline-block'; // Muestra de nuevo el span
-        inputMultiplicador.style.display = 'none'; // Oculta el input
+        displayMultiplicador.textContent = multiplicador.toFixed(3);
+        displayMultiplicador.style.display = 'inline-block';
+        inputMultiplicador.style.display = 'none';
         
-        actualizarResumen(); // Recalcula el total final con el nuevo multiplicador
-        guardarDatos(); // Guarda el nuevo multiplicador
+        actualizarResumen();
+        guardarDatos();
     }
 
     // --- REINICIAR TODO ---
-    // Event listener para el botón 'Reiniciar Todo'
     btnResetTodo.addEventListener('click', () => {
         if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas y reiniciar el multiplicador? Esta acción no se puede deshacer.')) {
-            entradas = []; // Vacía el array de entradas
-            multiplicador = 1.000; // Restablece el multiplicador a su valor por defecto (con 3 decimales)
-            localStorage.removeItem('horasTrabajadas_entradas'); // Elimina las entradas de localStorage
-            localStorage.removeItem('horasTrabajadas_multiplicador'); // Elimina el multiplicador de localStorage
+            entradas = [];
+            multiplicador = 1.000;
+            localStorage.removeItem('horasTrabajadas_entradas');
+            localStorage.removeItem('horasTrabajadas_multiplicador');
             
-            renderizarTabla(); // Actualiza la tabla (quedará vacía)
-            actualizarResumen(); // Actualiza el resumen (quedará en ceros)
-            // --- CAMBIO: MULTIPLICADOR DISPLAY A 3 DECIMALES AL RESETEAR ---
-            displayMultiplicador.textContent = multiplicador.toFixed(3); // Muestra el multiplicador reseteado con 3 decimales
-            inputFecha.value = ''; // Limpia el input de fecha
-            inputHoras.value = ''; // Limpia el input de horas
-            inicializarFecha(); // Pone la fecha actual en el input de fecha
+            renderizarTabla();
+            actualizarResumen();
+            displayMultiplicador.textContent = multiplicador.toFixed(3);
+            inputFecha.value = '';
+            inputHoras.value = '';
+            inicializarFecha();
+            // Ocultar teclado si algún input tenía foco
+            if (document.activeElement === inputHoras || document.activeElement === inputFecha) {
+                document.activeElement.blur();
+            }
         }
     });
 
      // --- INICIALIZACIÓN ---
-     // Función para poner la fecha actual en el input de fecha al cargar la página
     function inicializarFecha() {
-        const hoy = new Date(); // Crea un objeto Date con la fecha y hora actual
-        const offset = hoy.getTimezoneOffset(); // Obtiene la diferencia en minutos con UTC (zona horaria)
-        const hoyLocal = new Date(hoy.getTime() - (offset * 60 * 1000)); // Ajusta la fecha a la zona horaria local
-        inputFecha.value = hoyLocal.toISOString().split('T')[0]; // Formatea a YYYY-MM-DD y la asigna al input
+        const hoy = new Date();
+        const offset = hoy.getTimezoneOffset();
+        const hoyLocal = new Date(hoy.getTime() - (offset * 60 * 1000));
+        inputFecha.value = hoyLocal.toISOString().split('T')[0];
     }
 
-    inicializarFecha(); // Llama a la función para inicializar la fecha
-    cargarDatos(); // Carga los datos guardados al iniciar la página
+    inicializarFecha();
+    cargarDatos();
 });
 // --- FIN DEL CÓDIGO JAVASCRIPT COMPLETO ---
