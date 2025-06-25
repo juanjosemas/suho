@@ -47,7 +47,7 @@ h1 {
     transition: all 0.5s ease-in-out; 
     background-color: black; 
     border: 2px solid red; 
-    box-shadow: 0 0 0 3px black; 
+    box-shadow: 0 0 0 3px black;
 }
 
 @keyframes logo {
@@ -87,10 +87,12 @@ h1 {
 
 .formulario-entrada label {
     margin-bottom: 5px; 
-    font-weight: bold; /* Aumentado para mejor legibilidad con 'Piedra' */
+    font-weight: bold;
     color: #333; /* Un poco más oscuro */
     font-size: 1.5em; /* Ligeramente más grande */
-    font-family: Metal mania;
+    font-family: Piedra;
+    color: red;
+    text-shadow: 3px 3px 1px #000, 5px 5px 2px #000, 8px 8px 3px #000;
 }
 
 .formulario-entrada input[type="date"],
@@ -289,6 +291,7 @@ h1 {
     transition: background-color 0.2s; 
     font-family: Metal mania;
     font-size: 15px;
+    font-weight: bold;
 }
 .btn-peligro:hover {
     background-color: #c82333; 
