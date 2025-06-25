@@ -1,7 +1,7 @@
 /* --- INICIO DEL CÓDIGO CSS COMPLETO (BASADO EN TU ÚLTIMA VERSIÓN) --- */
 body {
     /* Estilos generales del cuerpo de la página */
-    font-family: 'Piedra', cursive; /* Fuente principal por defecto. Añadido 'cursive' como fallback genérico */
+    font-family: Piedra;
     margin: 0; /* Sin margen exterior */
     padding: 20px; /* Espaciado interior */
     color: black; /* Color de texto principal */
@@ -27,19 +27,20 @@ body {
 h1 {
     /* Título principal de la página */
     text-align: center; 
-    color: black; 
+    color: red; 
     margin-bottom: 25px; 
-    font-size: 1.8em; 
+    font-size: 2.5em; 
     border-bottom: 2px solid #3498db; 
     padding-bottom: 10px; 
-    font-family: Piedra; /* Sugerencia: una fuente más legible para el título si 'Piedra' es muy estilizada */
+    font-family: Metal mania;
+    text-shadow: 3px 3px 1px #000, 5px 5px 2px #000, 8px 8px 3px #000;
 }
 
 .ico {
     /* Estilos para el icono/logo de Juanjo */
     float: left; 
     margin-left: 10px; 
-    margin-top: 15px; 
+    margin-top: 20px; 
     border-radius: 50%; 
     animation-name: logo; 
     animation-duration: 3s; 
@@ -63,7 +64,7 @@ h1 {
     background-color: rgba(249, 250, 251, 0.20); /* Tu valor de transparencia */
     border-radius: 6px; 
     align-items: flex-end; 
-    border: 1px solid rgba(223, 230, 236, 0.20); 
+    border: 1px solid rgba(223, 230, 236, 0.20);
 }
 
 #campoFechaWrapper {
@@ -76,7 +77,7 @@ h1 {
     display: flex; 
     align-items: flex-end; 
     gap: 8px; 
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 #campoHorasWrapper {
@@ -88,8 +89,8 @@ h1 {
     margin-bottom: 5px; 
     font-weight: bold; /* Aumentado para mejor legibilidad con 'Piedra' */
     color: #333; /* Un poco más oscuro */
-    font-size: 1em; /* Ligeramente más grande */
-    font-family: 'Open Sans', sans-serif; /* Sugerencia: fuente más legible para labels */
+    font-size: 1.5em; /* Ligeramente más grande */
+    font-family: Metal mania;
 }
 
 .formulario-entrada input[type="date"],
@@ -124,6 +125,7 @@ h1 {
     white-space: nowrap; 
     height: 35px; 
     font-family: Piedra;
+    text-shadow: 5px 4px 2px #000;
 }
 #btnAgregar:hover {
     background-color: #0000cc; /* Azul más oscuro para hover */
@@ -199,11 +201,13 @@ h1 {
 .btn-editar {
     background-color: green;
     color: white;
+    text-shadow: 5px 4px 2px #000;
 }
 
 .btn-borrar {
     background-color: #dc3545; 
     color: white; 
+    text-shadow: 5px 4px 2px #000;
 }
 
 /* --- Sección de Resumen --- */
@@ -283,7 +287,7 @@ h1 {
     border-radius: 40px; 
     cursor: pointer; 
     transition: background-color 0.2s; 
-    font-family: Piedra;
+    font-family: Metal mania;
     font-size: 15px;
 }
 .btn-peligro:hover {
@@ -310,7 +314,7 @@ h1 {
     }
 
     h1 {
-        font-size: 1.6em; /* Ajusta si es necesario con 'Piedra' */
+        font-size: 1.8em; /* Ajusta si es necesario con 'Piedra' */
         margin-bottom: 20px; 
     }
 
@@ -321,7 +325,7 @@ h1 {
         background-color: rgba(249, 250, 251, 0.30); /* Tu valor móvil */
     }
     .formulario-entrada label {
-        font-size: 1.1em; /* Ajusta para legibilidad en móvil */
+        font-size: 1.5em; /* Ajusta para legibilidad en móvil */
     }
     .formulario-entrada input[type="date"],
     .formulario-entrada input[type="number"] {
