@@ -1,10 +1,9 @@
-
+/* --- INICIO DEL CÓDIGO CSS COMPLETO (BASADO EN TU ÚLTIMA VERSIÓN) --- */
 body {
     /* Estilos generales del cuerpo de la página */
-    font-family: Piedra; /* Fuente principal por defecto */
+    font-family: 'Piedra', cursive; /* Fuente principal por defecto. Añadido 'cursive' como fallback genérico */
     margin: 0; /* Sin margen exterior */
     padding: 20px; /* Espaciado interior */
-    /* background-color: #eef2f7;  Ya no es tan necesario si la imagen cubre todo */
     color: black; /* Color de texto principal */
     font-size: 14px; /* Tamaño de fuente base */
      /* Propiedades para la imagen de fondo */
@@ -19,24 +18,21 @@ body {
     /* Contenedor principal de la aplicación */
     max-width: 700px; /* Ancho máximo del contenedor */
     margin: 20px auto; /* Centrado horizontalmente con margen superior/inferior */
-    /* --- CAMBIO: FONDO DEL CONTENEDOR SEMI-TRANSPARENTE --- */
-    /* background-color: #fff;  Comentado o eliminado */
-    background-color: rgba(255, 255, 255, 0.20); /* Blanco con 85% de opacidad. Ajusta el 0.85 (0.0 a 1.0) */
+    background-color: rgba(255, 255, 255, 0.20); /* Tu valor de transparencia */
     padding: 25px; /* Espaciado interior */
     border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20); /* Sombra un poco más pronunciada para destacar sobre el fondo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20); /* Tu valor de sombra */
 }
 
 h1 {
     /* Título principal de la página */
-    text-align: center; /* Texto centrado */
-    color: #2c3e50; /* Color del texto del título */
-    margin-bottom: 25px; /* Margen inferior */
-    font-size: 1.8em; /* Tamaño de fuente del título */
-    border-bottom: 2px solid #3498db; /* Línea decorativa inferior */
-    padding-bottom: 10px; /* Espacio entre el texto y la línea */
-    /* Considera añadir una ligera sombra al texto si la legibilidad se ve afectada por el fondo */
-    /* text-shadow: 0px 0px 3px rgba(0,0,0,0.5); */
+    text-align: center; 
+    color: #2c3e50; 
+    margin-bottom: 25px; 
+    font-size: 1.8em; 
+    border-bottom: 2px solid #3498db; 
+    padding-bottom: 10px; 
+    font-family: Piedra, sans-serif; /* Sugerencia: una fuente más legible para el título si 'Piedra' es muy estilizada */
 }
 
 .ico {
@@ -54,30 +50,20 @@ h1 {
 }
 
 @keyframes logo {
-    from {
-        opacity: 0; 
-        transform: scale(0.5) rotate(0deg); 
-    }
-    to {
-        opacity: 1; 
-        transform: scale(1) rotate(1440deg); 
-    }
+    from { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    to { opacity: 1; transform: scale(1) rotate(1440deg); }
 }
-
 
 /* --- Formulario de Entrada Principal --- */
 .formulario-entrada {
-    /* Contenedor del formulario para agregar nuevas entradas */
     display: flex; 
     gap: 15px; 
     margin-bottom: 25px; 
     padding: 15px; 
-    /* --- CAMBIO: FONDO DEL FORMULARIO SEMI-TRANSPARENTE --- */
-    /* background-color: #f9fafb;  Comentado o eliminado */
-    background-color: rgba(249, 250, 251, 0.20); /* Color original casi blanco, con 75% opacidad. Ajusta el 0.75 */
+    background-color: rgba(249, 250, 251, 0.20); /* Tu valor de transparencia */
     border-radius: 6px; 
     align-items: flex-end; 
-    border: 1px solid rgba(223, 230, 236, 0.20); /* Borde también semitransparente */
+    border: 1px solid rgba(223, 230, 236, 0.20); 
 }
 
 #campoFechaWrapper {
@@ -100,23 +86,25 @@ h1 {
 
 .formulario-entrada label {
     margin-bottom: 5px; 
-    font-weight: 500; 
-    color: #4a5568; /* Un poco más oscuro para mejor contraste sobre fondo transparente */
-    font-size: 0.9em; 
+    font-weight: bold; /* Aumentado para mejor legibilidad con 'Piedra' */
+    color: #333; /* Un poco más oscuro */
+    font-size: 1em; /* Ligeramente más grande */
+    font-family: 'Open Sans', sans-serif; /* Sugerencia: fuente más legible para labels */
 }
 
 .formulario-entrada input[type="date"],
 .formulario-entrada input[type="number"] {
     padding: 8px; 
-    border: 1px solid #cbd5e0; /* Borde un poco más visible */
+    border: 1px solid #aaa; /* Borde un poco más oscuro */
     border-radius: 4px; 
     font-size: 0.95em; 
-    background-color: rgba(255, 255, 255, 0.20); /* Fondo de inputs ligeramente transparente */
+    background-color: rgba(255, 255, 255, 0.50); /* Un poco más opaco para legibilidad del input */
+    font-family: Piedra;
 }
 
 #inputFecha {
     min-width: 150px; 
-    font-family: Piedra;
+   font-family: Piedra; /*Considera si es legible aquí */
 }
 
 #inputHoras {
@@ -126,20 +114,20 @@ h1 {
 
 #btnAgregar {
     padding: 8px 12px; 
-    background-color: #28a745; 
+    background-color: blue; 
     color: white; 
     border: none; 
-    border-radius: 4px; 
+    border-radius: 40px; 
     cursor: pointer; 
     font-size: 0.9em; 
     transition: background-color 0.2s ease-in-out; 
     white-space: nowrap; 
     height: 35px; 
+    font-family: Piedra;
 }
 #btnAgregar:hover {
-    background-color: #218838; 
+    background-color: #0000cc; /* Azul más oscuro para hover */
 }
-
 
 /* --- Tabla de Entradas --- */
 #tablaEntradas {
@@ -158,10 +146,11 @@ h1 {
 }
 
 #tablaEntradas th, #tablaEntradas td {
-    border: 1px solid rgba(223, 230, 236, 0.20); /* Borde de celdas semitransparente */
+    border: 1px solid rgba(180, 180, 180, 0.30); /* Borde un poco más visible */
     padding: 10px 12px; 
     text-align: left; 
     vertical-align: middle; 
+    font-family: Piedra;
 }
 
 #tablaEntradas th:nth-child(1), 
@@ -172,38 +161,36 @@ h1 {
 #tablaEntradas td:nth-child(3) { width: 50%; text-align: center; }
 
 #tablaEntradas th {
-    /* --- CAMBIO: FONDO DEL ENCABEZADO DE TABLA SEMI-TRANSPARENTE --- */
-    /* background-color: #f1f5f9; Comentado o eliminado */
-    background-color: rgba(241, 245, 249, 0.20); /* Color original, con 70% opacidad. Ajusta el 0.7 */
-    color: #334155; 
-    font-weight: 600; 
+    background-color: rgba(220, 230, 240, 0.30); /* Un poco más opaco y color diferente */
+    color: #1a2733;  /* Más oscuro */
+    font-weight: bold; 
     text-transform: uppercase; 
     font-size: 0.9em; 
 }
 
 #tablaEntradas td {
-    /* --- CAMBIO: FONDO DE CELDAS DE TABLA SEMI-TRANSPARENTE --- */
-    /* background-color: #fff; Comentado o eliminado */
-    background-color: rgba(255, 255, 255, 0.20); /* Blanco con 65% opacidad. Ajusta el 0.65 */
+    background-color: rgba(255, 255, 255, 0.25); /* Un poco más opaco */
 }
 
 #tablaEntradas tr:nth-child(even) td {
-    /* --- CAMBIO: FONDO DE CELDAS PARES SEMI-TRANSPARENTE --- */
-    /* background-color: #f8fafc; Comentado o eliminado */
-    background-color: rgba(248, 250, 252, 0.20); /* Color original, con 60% opacidad. Ajusta el 0.6 */
+    background-color: rgba(240, 245, 250, 0.25); /* Un poco más opaco */
 }
 
+/* --- MODIFICACIÓN: BOTONES DE ACCIÓN MÁS PEQUEÑOS (ESCRITORIO) --- */
 #tablaEntradas .acciones-btn {
-    padding: 6px 10px; 
-    margin-right: 6px; 
+    padding: 3px 6px;   /* Reducido para hacer el botón más compacto */
+    margin-right: 4px;  /* Margen entre botones */
     border: none; 
-    border-radius: 4px; 
+    border-radius: 30px; 
     cursor: pointer; 
-    font-size: 0.85em; 
+    font-size: 0.7em;   /* Tamaño de fuente del texto del botón muy reducido */
     transition: opacity 0.2s; 
+    font-family: Caveat;
+    font-weight: 900;
 }
-#tablaEntradas .acciones-btn:last-child {
+#tablaEntradas .acciones-btn:last-child{
     margin-right: 0; 
+    text-decoration: underline;
 }
 #tablaEntradas .acciones-btn:hover {
     opacity: 0.8; 
@@ -223,11 +210,9 @@ h1 {
 .seccion-resumen {
     margin-top: 20px; 
     padding: 20px; 
-    /* --- CAMBIO: FONDO DE SECCIÓN RESUMEN SEMI-TRANSPARENTE --- */
-    /* background-color: #f9fafb; Comentado o eliminado */
-    background-color: rgba(249, 250, 251, 0.20); /* Mismo que el formulario de entrada. Ajusta el 0.75 */
+    background-color: rgba(249, 250, 251, 0.20); /* Tu valor de transparencia */
     border-radius: 6px; 
-    border: 1px solid rgba(223, 230, 236, 0.20); /* Borde semitransparente */
+    border: 1px solid rgba(223, 230, 236, 0.20); 
 }
 
 .seccion-resumen h2 {
@@ -235,8 +220,9 @@ h1 {
     color: #2c3e50; 
     margin-top: 0; 
     margin-bottom: 15px; 
-    border-bottom: 1px solid rgba(224, 224, 224, 0.20); /* Línea semitransparente */
+    border-bottom: 1px solid rgba(224, 224, 224, 0.20); 
     padding-bottom: 8px; 
+    font-family: Piedra;
 }
 
 .resumen-fila {
@@ -244,27 +230,30 @@ h1 {
     justify-content: space-between; 
     align-items: center; 
     padding: 10px 0; 
-    border-bottom: 1px dashed rgba(224, 224, 224, 0.20); /* Línea punteada semitransparente */
+    border-bottom: 1px dashed rgba(200, 200, 200, 0.30); /* Línea un poco más visible */
 }
 
 .resumen-label {
-    font-weight: 500; 
-    color: #374151; /* Un poco más oscuro para contraste */
+    font-weight: bold; /* Aumentado */
+    color: #222; /* Más oscuro */
+    font-family: Piedra;
+    text-decoration: underline;
 }
 
 .valor-calculado, .valor-editable {
     font-weight: bold; 
-    font-size: 1.1em; 
+    font-size: 2em; 
+    font-family: Piedra;
 }
 
 .valor-editable {
-    color: #0069d9; /* Azul un poco más oscuro */
+    color: #0056b3; /* Azul más oscuro */
     cursor: pointer; 
     padding: 3px 6px; 
-    border-bottom: 1px dashed #0069d9; 
+    border-bottom: 1px dashed #0056b3;
 }
 .valor-editable:hover {
-    background-color: rgba(231, 243, 255, 0.20); /* Fondo de hover también semitransparente */
+    background-color: rgba(200, 225, 255, 0.30); /* Más transparente */
 }
 
 .input-editable {
@@ -274,11 +263,12 @@ h1 {
     font-size: 1em; 
     width: 90px; 
     text-align: right; 
-    background-color: rgba(255, 255, 255, 0.20); /* Fondo del input editable casi opaco */
+    background-color: rgba(255, 255, 255, 0.60); /* Más opaco */
+    font-family: Piedra;
 }
 
 .gran-total {
-    color: black; /* Negro para contraste */
+    color: black; 
     font-size: 1.3em; 
 }
 
@@ -292,6 +282,7 @@ h1 {
     border-radius: 4px; 
     cursor: pointer; 
     transition: background-color 0.2s; 
+    font-family: 'Open Sans', sans-serif;
 }
 .btn-peligro:hover {
     background-color: #c82333; 
@@ -301,17 +292,17 @@ h1 {
 @media (max-width: 600px) {
     body {
         padding: 10px; 
-        font-size: 15px; 
+        font-size: 15px; /* Ajusta si 'Piedra' es muy grande */
     }
 
     .container {
         padding: 15px; 
         margin: 10px auto; 
-        background-color: rgba(255, 255, 255, 0.20); /* Un poco más opaco en móviles para legibilidad */
+        background-color: rgba(255, 255, 255, 0.30); /* Tu valor móvil */
     }
 
     h1 {
-        font-size: 1.5em; 
+        font-size: 1.6em; /* Ajusta si es necesario con 'Piedra' */
         margin-bottom: 20px; 
     }
 
@@ -319,38 +310,24 @@ h1 {
         flex-direction: column; 
         align-items: stretch; 
         gap: 10px; 
-        background-color: rgba(249, 250, 251, 0.20); /* Más opaco en móviles */
+        background-color: rgba(249, 250, 251, 0.30); /* Tu valor móvil */
+    }
+    .formulario-entrada label {
+        font-size: 1.1em; /* Ajusta para legibilidad en móvil */
+    }
+    .formulario-entrada input[type="date"],
+    .formulario-entrada input[type="number"] {
+        font-size: 1em; /* Ajusta para legibilidad en móvil */
+        background-color: rgba(255, 255, 255, 0.6);
     }
 
-    #campoFechaWrapper {
-        width: 100%; 
-    }
-    #inputFecha {
-        width: 100%; 
-        box-sizing: border-box; 
-    }
 
-    .grupo-horas-agregar {
-        width: 100%; 
-        gap: 10px; 
-    }
-    
-    #campoHorasWrapper {
-        flex-grow: 1; 
-    }
-    #inputHoras {
-        width: 100%; 
-        box-sizing: border-box; 
-        font-size: 1.05em; 
-        padding: 10px; 
-    }
-
-    #btnAgregar {
-        flex-shrink: 0; 
-        font-size: 1em; 
-        padding: 10px 15px; 
-        height: auto; 
-    }
+    #campoFechaWrapper { width: 100%; }
+    #inputFecha { width: 100%; box-sizing: border-box; }
+    .grupo-horas-agregar { width: 100%; gap: 10px; }
+    #campoHorasWrapper { flex-grow: 1; }
+    #inputHoras { width: 100%; box-sizing: border-box; font-size: 1.05em; padding: 10px; }
+    #btnAgregar { flex-shrink: 0; font-size: 1em; padding: 10px 15px; height: auto; }
 
     #tablaEntradas th:nth-child(1), 
     #tablaEntradas td:nth-child(1) { width: 30%; } 
@@ -362,27 +339,28 @@ h1 {
 
     #tablaEntradas th, #tablaEntradas td {
         padding: 8px 6px; 
-        font-size: 0.95em; 
+        font-size: 0.9em; /* Ajusta para legibilidad en móvil */
     }
     #tablaEntradas th {
-        background-color: rgba(241, 245, 249, 0.20); /* Más opaco en móviles */
+        background-color: rgba(220, 230, 240, 0.40); /* Tu valor móvil, un poco más opaco */
     }
     #tablaEntradas td {
-        background-color: rgba(255, 255, 255, 0.75); /* Más opaco en móviles */
+        background-color: rgba(255, 255, 255, 0.30); /* Ajustado de tu 0.75, hazlo más opaco si es necesario */
     }
     #tablaEntradas tr:nth-child(even) td {
-        background-color: rgba(248, 250, 252, 0.7); /* Más opaco en móviles */
+        background-color: rgba(240, 245, 250, 0.30); /* Ajustado de tu 0.7, hazlo más opaco si es necesario */
     }
 
+    /* --- MODIFICACIÓN: BOTONES DE ACCIÓN MÁS PEQUEÑOS (MÓVIL) --- */
     #tablaEntradas .acciones-btn {
-        padding: 6px 8px; 
-        font-size: 0.8em; 
-        margin-right: 4px; 
+        padding: 2px 4px;   /* Aún más compacto para móviles */
+        font-size: 0.65em;  /* Texto muy pequeño, verifica legibilidad */
+        margin-right: 2px;  /* Margen mínimo */
     }
 
     .seccion-resumen {
         padding: 15px; 
-        background-color: rgba(249, 250, 251, 0.20); /* Más opaco en móviles */
+        background-color: rgba(249, 250, 251, 0.30); /* Tu valor móvil */
     }
     .seccion-resumen h2 {
         font-size: 1.2em; 
@@ -393,16 +371,18 @@ h1 {
     }
     .resumen-label {
         margin-bottom: 4px; 
+        font-size: 0.95em; /* Ajusta para legibilidad */
     }
     .valor-calculado, .valor-editable {
-        font-size: 1.05em; 
+        font-size: 1em; /* Ajusta para legibilidad */
     }
     .gran-total {
-        font-size: 1.25em; 
+        font-size: 1.15em; /* Ajusta para legibilidad */
     }
     .input-editable {
         width: 90px; 
-        font-size: 1em; 
+        font-size: 0.95em; /* Ajusta para legibilidad */
+        background-color: rgba(255, 255, 255, 0.7);
     }
 }
 /* --- FIN DEL CÓDIGO CSS COMPLETO --- */
