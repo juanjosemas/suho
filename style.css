@@ -7,7 +7,7 @@ body {
     color: black; /* Color de texto principal */
     font-size: 14px; /* Tamaño de fuente base */
      /* Propiedades para la imagen de fondo */
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('img/pajaro.jpg'); /* Imagen de fondo con un ligero degradado encima */
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('img/cascada.jpg'); /* Imagen de fondo con un ligero degradado encima */
     background-repeat: no-repeat; /* No repetir la imagen de fondo */
     background-position: center center; /* Centrar la imagen de fondo */
     background-attachment: fixed; /* La imagen de fondo se queda fija al hacer scroll */
