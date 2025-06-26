@@ -68,10 +68,12 @@ h1 {
     border: 1px solid rgba(223, 230, 236, 0.20);
 }
 
+/* Palabra Fecha */
 #campoFechaWrapper {
     display: flex; 
     flex-direction: column; 
     flex-grow: 1;
+    font-style: italic;
 }
 
 .grupo-horas-agregar {
@@ -81,9 +83,11 @@ h1 {
     flex-shrink: 0;
 }
 
+/* Palabra Hora */
 #campoHorasWrapper {
     display: flex; 
     flex-direction: column; 
+    font-style: italic;
 }
 
 .formulario-entrada label {
@@ -296,6 +300,7 @@ h1 {
     font-family: Metal mania;
     font-size: 15px;
     font-weight: bold;
+    font-style: italic;
 }
 .btn-peligro:hover {
     background-color: #c82333; 
