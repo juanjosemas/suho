@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayTotalFinal = document.getElementById('displayTotalFinal');
     const btnResetTodo = document.getElementById('btnResetTodo');
 
+    // Elemento del DOM para el botón de exportar
+    const btnExportarPDF = document.getElementById('btnExportarPDF');
+
     let entradas = [];
     let multiplicador = 1.000;
 
@@ -55,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fila.insertCell().textContent = parseFloat(entrada.horas).toFixed(1);
             
             const celdaAcciones = fila.insertCell();
+
             const btnEditar = document.createElement('button');
             btnEditar.textContent = 'EDITAR';
             btnEditar.classList.add('acciones-btn', 'btn-editar');
@@ -79,21 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- FUNCIÓN REUTILIZABLE PARA PROCESAR LA ENTRADA ---
-    // Esta función contiene la lógica de validación y agregado que antes estaba solo en el click del botón.
     function procesarNuevaEntrada() {
         const fecha = inputFecha.value;
         const horas = parseFloat(inputHoras.value);
 
         if (!fecha) {
             alert('Por favor, selecciona una fecha.');
-            inputFecha.focus(); // Devuelve el foco al campo de fecha si está vacío
-            return false; // Indica que la validación falló
+            inputFecha.focus();
+            return false;
         }
         if (isNaN(horas) || horas <= 0) {
             alert('Por favor, introduce un número de horas válido.');
-            inputHoras.focus(); // Mantiene el foco en el campo de horas
-            inputHoras.select(); // Selecciona el contenido para fácil corrección
-            return false; // Indica que la validación falló
+            inputHoras.focus();
+            inputHoras.select();
+            return false;
         }
 
         const nuevaEntrada = {
@@ -107,48 +110,31 @@ document.addEventListener('DOMContentLoaded', () => {
         actualizarResumen();
         guardarDatos();
 
-        inputHoras.value = ''; // Limpiar input de horas
+        inputHoras.value = '';
         
-        // --- CAMBIO: OCULTAR TECLADO (DESENFOCANDO EL INPUT ACTIVO) ---
-        // La forma más simple de intentar ocultar el teclado es quitar el foco del input.
-        // Si el foco estaba en inputHoras, desenfocarlo.
-        // Si el foco pasó al botón "Agregar" (en caso de clic), el teclado usualmente se oculta.
-        // Si fue por Enter en inputHoras, desenfocarlo es clave.
         if (document.activeElement === inputHoras || document.activeElement === inputFecha) {
             document.activeElement.blur(); 
         }
-        // No siempre es necesario devolver el foco a inputFecha, puede ser mejor no tener foco
-        // inputFecha.focus(); // Opcional: devolver el foco al campo de fecha para la siguiente entrada
 
-        return true; // Indica que la entrada fue procesada exitosamente
+        return true;
     }
 
-    // --- AGREGAR ENTRADA (POR CLIC EN BOTÓN) ---
-    btnAgregar.addEventListener('click', () => {
-        procesarNuevaEntrada();
-        // El teclado debería ocultarse naturalmente al hacer clic en un botón que no es un input.
-        // Si no es así, la llamada a .blur() dentro de procesarNuevaEntrada (si el foco estaba en un input) ayudará.
-    });
-
-    // --- CAMBIO: AGREGAR ENTRADA CON TECLA "INTRO" EN EL CAMPO DE HORAS ---
+    // --- EVENTOS DE LA INTERFAZ DE USUARIO ---
+    btnAgregar.addEventListener('click', procesarNuevaEntrada);
     inputHoras.addEventListener('keypress', (event) => {
-        // 'Enter' tiene keyCode 13 o key 'Enter'
         if (event.key === 'Enter' || event.keyCode === 13) {
-            event.preventDefault(); // Prevenir el comportamiento por defecto (ej. submit de formulario si existiera)
-            procesarNuevaEntrada(); // Llama a la misma lógica que el botón agregar
+            event.preventDefault();
+            procesarNuevaEntrada();
         }
     });
-
-    // --- CAMBIO: PERMITIR "INTRO" EN FECHA PARA PASAR A HORAS (OPCIONAL MEJORA UX) ---
     inputFecha.addEventListener('keypress', (event) => {
         if (event.key === 'Enter' || event.keyCode === 13) {
             event.preventDefault();
-            inputHoras.focus(); // Mueve el foco al campo de horas
+            inputHoras.focus();
         }
     });
 
-
-    // --- EDITAR ENTRADA ---
+    // --- EDITAR Y BORRAR ENTRADAS ---
     function editarEntrada(id) {
         const entrada = entradas.find(e => e.id === id);
         if (!entrada) return;
@@ -175,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- BORRAR ENTRADA ---
     function borrarEntrada(id) {
         if (confirm('¿Estás seguro de que quieres borrar esta entrada?')) {
             entradas = entradas.filter(e => e.id !== id);
@@ -231,12 +216,65 @@ document.addEventListener('DOMContentLoaded', () => {
             inputFecha.value = '';
             inputHoras.value = '';
             inicializarFecha();
-            // Ocultar teclado si algún input tenía foco
+
             if (document.activeElement === inputHoras || document.activeElement === inputFecha) {
                 document.activeElement.blur();
             }
         }
     });
+
+    // --- MODIFICACIÓN DEFINITIVA: FUNCIÓN PARA EXPORTAR A PDF USANDO ÁREA INVISIBLE ---
+    function exportarAPDF() {
+        // 1. Obtener los elementos de la zona de impresión invisible
+        const areaImprimible = document.getElementById('area-imprimible');
+        const tablaImprimibleBody = document.getElementById('tabla-imprimible').getElementsByTagName('tbody')[0];
+        const resumenImprimible = document.getElementById('resumen-imprimible');
+
+        // 2. Limpiar cualquier contenido anterior
+        tablaImprimibleBody.innerHTML = '';
+        resumenImprimible.innerHTML = '';
+
+        // 3. Poblar la tabla invisible con los datos actuales
+        entradas.forEach(entrada => {
+            const fila = tablaImprimibleBody.insertRow();
+            fila.insertCell().textContent = formatearFecha(entrada.fecha);
+            fila.insertCell().textContent = parseFloat(entrada.horas).toFixed(1);
+        });
+
+        // 4. Poblar el resumen invisible con los datos actuales
+        const sumaHoras = entradas.reduce((acc, curr) => acc + parseFloat(curr.horas), 0);
+        const totalFinal = sumaHoras * multiplicador;
+
+        resumenImprimible.innerHTML = `
+            <div class="fila-resumen-imprimible">
+                <span>MULTIPLICADOR:</span>
+                <span>${multiplicador.toFixed(3)}</span>
+            </div>
+            <div class="fila-resumen-imprimible">
+                <span>SUMA DE LAS HORAS:</span>
+                <span>${sumaHoras.toFixed(1)}</span>
+            </div>
+            <div class="fila-resumen-imprimible gran-total-imprimible">
+                <span>TOTAL:</span>
+                <span>${totalFinal.toFixed(3)}</span>
+            </div>
+        `;
+
+        // 5. Configurar y generar el PDF a partir del área invisible ya preparada
+        const hoy = new Date().toISOString().split('T')[0];
+        const nombreArchivo = `Horas_Trabajadas_${hoy}.pdf`;
+        const opt = {
+          margin:       10,
+          filename:     nombreArchivo,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true },
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        
+        html2pdf().set(opt).from(areaImprimible).save();
+    }
+
+    btnExportarPDF.addEventListener('click', exportarAPDF);
 
      // --- INICIALIZACIÓN ---
     function inicializarFecha() {
