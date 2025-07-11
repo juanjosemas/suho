@@ -9,14 +9,10 @@
     <!-- Enlace para fuentes de google -->
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Caveat:wght@700&family=Dancing+Script:wght@700&family=Lobster&family=Metal+Mania&family=Open+Sans:wght@300;400;700&family=Permanent+Marker&family=Piedra&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet">
     
-    <!-- Librería para exportar a PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
 </head>
 <body>
-    <!-- CONTENIDO VISIBLE DE LA APLICACIÓN -->
     <div class="container">
-        <a href="https://juanjosemas.github.io/horario" target="_self" class="btn">
+        <!-- Boton para ir a horario --> <a href="https://juanjosemas.github.io/horario" target="_self" class="btn">
             <img src="img/Juanjo.ico" class="ico" width="30">
         </a><h1>HORAS TRABAJADAS</h1>
 
@@ -51,41 +47,18 @@
             <h2>Resumen y Cálculos</h2>
             <div class="resumen-fila">
                 <span class="resumen-label">MULTIPLICADOR:</span>
-                <span id="displayMultiplicador" class="valor-editable" title="Doble clic para editar">1.000</span>
-                <input type="number" id="inputMultiplicador" class="input-editable" step="0.001" style="display:none;">
+                <span id="displayMultiplicador" class="valor-editable" title="Doble clic para editar">1.000</span> <!-- Cambiado a 3 decimales por defecto -->
+                <input type="number" id="inputMultiplicador" class="input-editable" step="0.001" style="display:none;"> <!-- Cambiado step a 0.001 -->
             </div>
             <div class="resumen-fila">
                 <span class="resumen-label">SUMA DE LAS HORAS:</span>
-                <span id="displaySumaHoras" class="valor-calculado">0.0</span>
+                <span id="displaySumaHoras" class="valor-calculado">0.0</span> <!-- Cambiado a 1 decimal por defecto -->
             </div>
             <div class="resumen-fila">
                 <span class="resumen-label">TOTAL:</span>
                 <span id="displayTotalFinal" class="valor-calculado gran-total">0.000</span>
             </div>
-        </div>
-
-        <div class="seccion-botones-finales">
-            <button id="btnExportarPDF" class="btn-exportar">Exportar a PDF</button>
             <button id="btnResetTodo" class="btn-peligro">Reiniciar Todo</button>
-        </div>
-    </div>
-
-    <!-- MODIFICACIÓN: ÁREA INVISIBLE SÓLO PARA LA GENERACIÓN DEL PDF -->
-    <div id="area-imprimible">
-        <h2 id="titulo-imprimible">Registro de Horas Trabajadas</h2>
-        <table id="tabla-imprimible">
-            <thead>
-                <tr>
-                    <th>FECHA</th>
-                    <th>HORAS</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Contenido generado por JavaScript -->
-            </tbody>
-        </table>
-        <div id="resumen-imprimible">
-            <!-- Contenido generado por JavaScript -->
         </div>
     </div>
 
