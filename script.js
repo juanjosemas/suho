@@ -119,14 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA FINAL Y A PRUEBA DE FALLOS) ---
+    // --- FUNCIÓN DE EXPORTACIÓN (MÉTODO DE IMPRESIÓN NATIVA) ---
     function exportarAPDF() {
-        // 1. Recopilar datos necesarios
+        // 1. Recopilar datos
         const sumaHoras = parseFloat(displaySumaHoras.textContent);
         const totalFinal = parseFloat(displayTotalFinal.textContent);
         const filasTablaReporte = entradas.map(entrada => `<tr><td>${formatearFecha(entrada.fecha)}</td><td>${parseFloat(entrada.horas).toFixed(1)}</td></tr>`).join('');
 
-        // 2. Definir los estilos CSS para el informe
+        // 2. Definir los estilos CSS para la página de impresión
         const estilosPDF = `
             body { font-family: 'Open Sans', sans-serif; color: #000; margin: 0; padding: 15px; }
             h1 { font-family: 'Metal Mania', cursive; color: #111; text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 10px; font-size: 28px; }
@@ -140,10 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .reporte-footer { text-align: center; margin-top: 30px; font-size: 10px; color: #888; }
         `;
 
-        // 3. Abrir una nueva ventana o pestaña
+        // 3. Abrir una nueva ventana en blanco
         const printWindow = window.open('', '_blank');
 
-        // 4. Escribir el HTML completo en la nueva ventana
+        // 4. Escribir el HTML completo del informe en esa nueva ventana
         printWindow.document.write(`
             <!DOCTYPE html>
             <html lang="es">
@@ -171,9 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
             </html>
         `);
         
-        // 5. Cerrar el flujo de escritura y lanzar la impresión
+        // 5. Cerrar el flujo de escritura y lanzar el diálogo de impresión del navegador
         printWindow.document.close();
-        printWindow.focus(); // Necesario para algunos navegadores
+        printWindow.focus(); // Ayuda a asegurar que la nueva ventana tenga el foco
         printWindow.print();
     }
 
