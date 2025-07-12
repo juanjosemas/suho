@@ -2,9 +2,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- SELECCIÓN DE ELEMENTOS DEL DOM ---
-    const bodyElement = document.body;
-    const containerElement = document.querySelector('.container');
-    const btnHorario = document.getElementById('btnHorario');
     const inputFecha = document.getElementById('inputFecha');
     const inputHoras = document.getElementById('inputHoras');
     const btnAgregar = document.getElementById('btnAgregar');
@@ -122,42 +119,71 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN A PDF ---
+    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA FINAL Y A PRUEBA DE FALLOS) ---
     function exportarAPDF() {
-        bodyElement.classList.add('pdf-export-mode');
-        const opt = {
-          margin: 15,
-          filename: `informe_horas_${new Date().toISOString().split('T')[0]}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().from(containerElement).set(opt).save().then(() => {
-            bodyElement.classList.remove('pdf-export-mode');
-        }).catch((error) => {
-            console.error('¡Ocurrió un error al generar el PDF!', error);
-            bodyElement.classList.remove('pdf-export-mode');
-        });
+        // 1. Recopilar datos necesarios
+        const sumaHoras = parseFloat(displaySumaHoras.textContent);
+        const totalFinal = parseFloat(displayTotalFinal.textContent);
+        const filasTablaReporte = entradas.map(entrada => `<tr><td>${formatearFecha(entrada.fecha)}</td><td>${parseFloat(entrada.horas).toFixed(1)}</td></tr>`).join('');
+
+        // 2. Definir los estilos CSS para el informe
+        const estilosPDF = `
+            body { font-family: 'Open Sans', sans-serif; color: #000; margin: 0; padding: 15px; }
+            h1 { font-family: 'Metal Mania', cursive; color: #111; text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 10px; font-size: 28px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+            th { background-color: #e9e9e9; font-weight: bold; text-align: center; }
+            td:nth-child(2) { text-align: center; }
+            .reporte-resumen { border: 1px solid #ddd; background-color: #f9f9f9; padding: 15px; margin-top: 20px; border-radius: 5px; }
+            .reporte-resumen p { display: flex; justify-content: space-between; margin: 8px 0; font-size: 14px; }
+            .reporte-resumen p strong { font-weight: bold; }
+            .reporte-footer { text-align: center; margin-top: 30px; font-size: 10px; color: #888; }
+        `;
+
+        // 3. Abrir una nueva ventana o pestaña
+        const printWindow = window.open('', '_blank');
+
+        // 4. Escribir el HTML completo en la nueva ventana
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <title>Informe de Horas</title>
+                <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+                <style>${estilosPDF}</style>
+            </head>
+            <body>
+                <h1>Informe de Horas Trabajadas</h1>
+                <table>
+                    <thead><tr><th>FECHA</th><th>HORAS</th></tr></thead>
+                    <tbody>${filasTablaReporte}</tbody>
+                </table>
+                <div class="reporte-resumen">
+                    <p><strong>SUMA DE LAS HORAS:</strong> <span>${sumaHoras.toFixed(1)}</span></p>
+                    <p><strong>MULTIPLICADOR:</strong> <span>${multiplicador.toFixed(3)}</span></p>
+                    <p><strong>TOTAL FINAL:</strong> <span>${totalFinal.toFixed(3)}</span></p>
+                </div>
+                <div class="reporte-footer">
+                    <p>Informe generado el ${new Date().toLocaleString('es-ES')}</p>
+                </div>
+            </body>
+            </html>
+        `);
+        
+        // 5. Cerrar el flujo de escritura y lanzar la impresión
+        printWindow.document.close();
+        printWindow.focus(); // Necesario para algunos navegadores
+        printWindow.print();
     }
 
     // --- EVENTOS (Listeners) ---
-    btnHorario.addEventListener('click', () => {
-        window.location.href = 'https://juanjosemas.github.io/horario';
-    });
     btnAgregar.addEventListener('click', procesarNuevaEntrada);
     inputHoras.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); procesarNuevaEntrada(); } });
     inputFecha.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); inputHoras.focus(); } });
     displayMultiplicador.addEventListener('dblclick', () => { displayMultiplicador.style.display = 'none'; inputMultiplicador.style.display = 'inline-block'; inputMultiplicador.value = multiplicador.toFixed(3); inputMultiplicador.focus(); inputMultiplicador.select(); });
     inputMultiplicador.addEventListener('blur', guardarNuevoMultiplicador);
-    
-    // <-- CAMBIO CLAVE: Corregido el error de tipeo aquí
-    inputMultiplicador.addEventListener('keypress', (event) => { 
-        if (event.key === 'Enter' || event.keyCode === 13) { 
-            event.preventDefault(); 
-            guardarNuevoMultiplicador(); 
-        } 
-    });
-
+    inputMultiplicador.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); guardarNuevoMultiplicador(); } });
     btnResetTodo.addEventListener('click', () => { if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) { entradas = []; localStorage.removeItem('horasTrabajadas_entradas'); renderizarTabla(); actualizarResumen(); inicializarFecha(); inputHoras.value = ''; if (document.activeElement === inputHoras || document.activeElement === inputFecha) { document.activeElement.blur(); } } });
     btnExportarPDF.addEventListener('click', exportarAPDF);
 
