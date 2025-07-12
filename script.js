@@ -119,14 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN (MÉTODO DE IMPRESIÓN NATIVA) ---
+    // --- FUNCIÓN DE EXPORTACIÓN (MÉTODO FINAL Y ROBUSTO) ---
     function exportarAPDF() {
         // 1. Recopilar datos
         const sumaHoras = parseFloat(displaySumaHoras.textContent);
         const totalFinal = parseFloat(displayTotalFinal.textContent);
         const filasTablaReporte = entradas.map(entrada => `<tr><td>${formatearFecha(entrada.fecha)}</td><td>${parseFloat(entrada.horas).toFixed(1)}</td></tr>`).join('');
 
-        // 2. Definir los estilos CSS para la página de impresión
+        // 2. Definir los estilos CSS para el informe
         const estilosPDF = `
             body { font-family: 'Open Sans', sans-serif; color: #000; margin: 0; padding: 15px; }
             h1 { font-family: 'Metal Mania', cursive; color: #111; text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 10px; font-size: 28px; }
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .reporte-footer { text-align: center; margin-top: 30px; font-size: 10px; color: #888; }
         `;
 
-        // 3. Abrir una nueva ventana en blanco
+        // 3. Abrir una nueva ventana o pestaña
         const printWindow = window.open('', '_blank');
 
         // 4. Escribir el HTML completo del informe en esa nueva ventana
@@ -151,30 +151,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 <meta charset="UTF-8">
                 <title>Informe de Horas</title>
                 <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
                 <style>${estilosPDF}</style>
             </head>
             <body>
-                <h1>Informe de Horas Trabajadas</h1>
-                <table>
-                    <thead><tr><th>FECHA</th><th>HORAS</th></tr></thead>
-                    <tbody>${filasTablaReporte}</tbody>
-                </table>
-                <div class="reporte-resumen">
-                    <p><strong>SUMA DE LAS HORAS:</strong> <span>${sumaHoras.toFixed(1)}</span></p>
-                    <p><strong>MULTIPLICADOR:</strong> <span>${multiplicador.toFixed(3)}</span></p>
-                    <p><strong>TOTAL FINAL:</strong> <span>${totalFinal.toFixed(3)}</span></p>
-                </div>
-                <div class="reporte-footer">
-                    <p>Informe generado el ${new Date().toLocaleString('es-ES')}</p>
+                <div id="informe-para-exportar">
+                    <h1>Informe de Horas Trabajadas</h1>
+                    <table>
+                        <thead><tr><th>FECHA</th><th>HORAS</th></tr></thead>
+                        <tbody>${filasTablaReporte}</tbody>
+                    </table>
+                    <div class="reporte-resumen">
+                        <p><strong>SUMA DE LAS HORAS:</strong> <span>${sumaHoras.toFixed(1)}</span></p>
+                        <p><strong>MULTIPLICADOR:</strong> <span>${multiplicador.toFixed(3)}</span></p>
+                        <p><strong>TOTAL FINAL:</strong> <span>${totalFinal.toFixed(3)}</span></p>
+                    </div>
+                    <div class="reporte-footer">
+                        <p>Informe generado el ${new Date().toLocaleString('es-ES')}</p>
+                    </div>
                 </div>
             </body>
             </html>
         `);
         
-        // 5. Cerrar el flujo de escritura y lanzar el diálogo de impresión del navegador
+        // 5. Cerrar el flujo de escritura
         printWindow.document.close();
-        printWindow.focus(); // Ayuda a asegurar que la nueva ventana tenga el foco
-        printWindow.print();
+        printWindow.focus(); 
+        
+        // 6. Ejecutar html2pdf DENTRO de la nueva ventana
+        setTimeout(() => { // Un pequeño retardo para asegurar que todo ha cargado
+            const elemento = printWindow.document.getElementById('informe-para-exportar');
+            const opt = {
+              margin: 15,
+              filename: `informe_horas_${new Date().toISOString().split('T')[0]}.pdf`,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true },
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            printWindow.html2pdf().from(elemento).set(opt).save().then(() => {
+                printWindow.close(); // Cerrar la ventana emergente después de guardar
+            });
+        }, 500);
     }
 
     // --- EVENTOS (Listeners) ---
