@@ -35,6 +35,11 @@ h1 {
     font-family: Metal mania;
     text-shadow: 3px 3px 1px #000, 5px 5px 2px #000, 8px 8px 3px #000;
 }
+
+.btn-link {
+    cursor: pointer;
+}
+
 .ico {
     float: left; 
     margin-left: 10px; 
@@ -64,29 +69,59 @@ h1 {
     border: 1px solid rgba(223, 230, 236, 0.20);
 }
 #campoFechaWrapper {
-    display: flex; flex-direction: column; flex-grow: 1;
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 1;
 }
 .grupo-horas-agregar {
-    display: flex; align-items: flex-end; gap: 8px; flex-shrink: 0;
+    display: flex; 
+    align-items: flex-end; 
+    gap: 8px; 
+    flex-shrink: 0;
 }
 #campoHorasWrapper {
-    display: flex; flex-direction: column; 
+    display: flex; 
+    flex-direction: column; 
 }
 .formulario-entrada label {
-    margin-bottom: 5px; font-weight: bold; font-size: 1.5em; font-family: Piedra; color: red; text-shadow: 3px 3px 1px #000, 5px 5px 2px #000, 8px 8px 3px #000;
+    margin-bottom: 5px; 
+    font-weight: bold;
+    font-size: 1.5em;
+    font-family: Piedra;
+    color: red;
+    text-shadow: 3px 3px 1px #000, 5px 5px 2px #000, 8px 8px 3px #000;
 }
 .formulario-entrada input[type="date"],
 .formulario-entrada input[type="number"] {
-    padding: 8px; border: 1px solid #aaa; border-radius: 4px; font-size: 0.95em; background-color: rgba(255, 255, 255, 0.50); font-family: Piedra;
+    padding: 8px; 
+    border: 1px solid #aaa;
+    border-radius: 4px; 
+    font-size: 0.95em; 
+    background-color: rgba(255, 255, 255, 0.50);
+    font-family: Piedra;
 }
 #inputFecha {
-    min-width: 150px; border-radius: 30px;
+    min-width: 150px; 
+    border-radius: 30px;
 }
 #inputHoras {
-    width: 100px; text-align: center; border-radius: 30px;
+    width: 100px; 
+    text-align: center; 
+    border-radius: 30px;
 }
 #btnAgregar {
-    padding: 8px 12px; background-color: blue; color: white; border: none; border-radius: 30px; cursor: pointer; font-size: 0.9em; transition: background-color 0.2s ease-in-out; white-space: nowrap; height: 35px; font-family: Piedra; text-shadow: 5px 4px 2px #000;
+    padding: 8px 12px; 
+    background-color: blue; 
+    color: white; 
+    border: none; 
+    border-radius: 30px; 
+    cursor: pointer; 
+    font-size: 0.9em; 
+    transition: background-color 0.2s ease-in-out; 
+    white-space: nowrap; 
+    height: 35px; 
+    font-family: Piedra;
+    text-shadow: 5px 4px 2px #000;
 }
 #btnAgregar:hover {
     background-color: #0000cc;
@@ -94,19 +129,34 @@ h1 {
 
 /* --- Tabla de Entradas --- */
 #tablaEntradas {
-    width: 100%; border-collapse: collapse; margin-bottom: 30px; display: block; overflow-x: auto; white-space: nowrap; 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 30px; 
+    display: block; 
+    overflow-x: auto; 
+    white-space: nowrap; 
 }
 #tablaEntradas thead, #tablaEntradas tbody, #tablaEntradas tr {
-    display: table; width: 100%; table-layout: fixed; 
+    display: table; 
+    width: 100%; 
+    table-layout: fixed; 
 }
 #tablaEntradas th, #tablaEntradas td {
-    border: 1px solid rgba(180, 180, 180, 0.30); padding: 10px 12px; text-align: left; vertical-align: middle; font-family: Piedra;
+    border: 1px solid rgba(180, 180, 180, 0.30);
+    padding: 10px 12px; 
+    text-align: left; 
+    vertical-align: middle; 
+    font-family: Piedra;
 }
 #tablaEntradas th:nth-child(1), #tablaEntradas td:nth-child(1) { width: 30%; } 
 #tablaEntradas th:nth-child(2), #tablaEntradas td:nth-child(2) { width: 20%; text-align: center; } 
 #tablaEntradas th:nth-child(3), #tablaEntradas td:nth-child(3) { width: 50%; text-align: center; }
 #tablaEntradas th {
-    background-color: rgba(220, 230, 240, 0.30); color: #1a2733; font-weight: bold; text-transform: uppercase; font-size: 0.9em; 
+    background-color: rgba(220, 230, 240, 0.30);
+    color: #1a2733;
+    font-weight: bold; 
+    text-transform: uppercase; 
+    font-size: 0.9em; 
 }
 #tablaEntradas td {
     background-color: rgba(255, 255, 255, 0.25);
@@ -117,56 +167,113 @@ h1 {
 
 /* --- Botones de Acción en la Tabla (Editar/Borrar) --- */
 #tablaEntradas .acciones-btn {
-    padding: 10px 16px; margin-right: 20px; border: none; border-radius: 30px; cursor: pointer; font-size: 1em; transition: opacity 0.2s; font-family: Caveat; font-weight: 900;
+    padding: 10px 16px;
+    margin-right: 20px;
+    border: none; 
+    border-radius: 30px; 
+    cursor: pointer; 
+    font-size: 1em;
+    transition: opacity 0.2s; 
+    font-family: Caveat;
+    font-weight: 900;
 }
 #tablaEntradas .acciones-btn:last-child{
-    margin-right: 0; text-decoration: underline;
+    margin-right: 0; 
+    text-decoration: underline;
 }
 #tablaEntradas .acciones-btn:hover {
     opacity: 0.8; 
 }
 .btn-editar {
-    background-color: green; color: white; text-shadow: 5px 4px 2px #000;
+    background-color: green;
+    color: white;
+    text-shadow: 5px 4px 2px #000;
 }
 .btn-borrar {
-    background-color: #dc3545; color: white; text-shadow: 5px 4px 2px #000;
+    background-color: #dc3545; 
+    color: white; 
+    text-shadow: 5px 4px 2px #000;
 }
 
 /* --- Sección de Resumen y Totales --- */
 .seccion-resumen {
-    margin-top: 20px; padding: 20px; background-color: rgba(249, 250, 251, 0.20); border-radius: 6px; border: 1px solid rgba(223, 230, 236, 0.20); text-decoration: underline;
+    margin-top: 20px; 
+    padding: 20px; 
+    background-color: rgba(249, 250, 251, 0.20);
+    border-radius: 6px; 
+    border: 1px solid rgba(223, 230, 236, 0.20); 
+    text-decoration: underline;
 }
 .seccion-resumen h2 {
-    font-size: 1.8em; color: #2c3e50; margin-top: 0; margin-bottom: 15px; border-bottom: 1px solid rgba(224, 224, 224, 0.20); padding-bottom: 8px; font-family: Piedra;
+    font-size: 1.8em; 
+    color: #2c3e50; 
+    margin-top: 0; 
+    margin-bottom: 15px; 
+    border-bottom: 1px solid rgba(224, 224, 224, 0.20); 
+    padding-bottom: 8px; 
+    font-family: Piedra;
 }
 .resumen-fila {
-    display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed rgba(200, 200, 200, 0.30);
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 0; 
+    border-bottom: 1px dashed rgba(200, 200, 200, 0.30);
 }
 .resumen-label {
-    font-weight: bold; color: #222; font-family: Piedra; text-decoration: underline;
+    font-weight: bold;
+    color: #222;
+    font-family: Piedra;
+    text-decoration: underline;
 }
 .valor-calculado, .valor-editable {
-    font-weight: bold; font-size: 1.6em; font-family: Piedra;
+    font-weight: bold; 
+    font-size: 1.6em; 
+    font-family: Piedra;
 }
 .valor-editable {
-    color: #0056b3; cursor: pointer; padding: 3px 6px; border-bottom: 1px dashed #0056b3;
+    color: #0056b3; 
+    cursor: pointer; 
+    padding: 3px 6px; 
+    border-bottom: 1px dashed #0056b3;
 }
 .valor-editable:hover {
     background-color: rgba(200, 225, 255, 0.30);
 }
 .input-editable {
-    padding: 6px; border: 1px solid #007bff; border-radius: 4px; font-size: 1em; width: 90px; text-align: right; background-color: rgba(255, 255, 255, 0.60); font-family: Piedra;
+    padding: 6px; 
+    border: 1px solid #007bff; 
+    border-radius: 4px; 
+    font-size: 1em; 
+    width: 90px; 
+    text-align: right; 
+    background-color: rgba(255, 255, 255, 0.60);
+    font-family: Piedra;
 }
 .gran-total {
-    color: black; font-size: 1.3em; 
+    color: black; 
+    font-size: 1.3em; 
 }
 
 /* --- Botones Principales (Exportar, Reiniciar) --- */
 .btn-exportar, .btn-peligro {
-    display: block; width: 80%; margin: 20px auto 10px auto; padding: 10px 20px; color: black; border: none; border-radius: 40px; cursor: pointer; transition: background-color 0.2s; font-family: Metal mania; font-size: 15px; font-weight: bold; box-sizing: border-box;
+    display: block;
+    width: 80%;
+    margin: 20px auto 10px auto; 
+    padding: 10px 20px;
+    color: black;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: Metal mania;
+    font-size: 15px;
+    font-weight: bold;
+    box-sizing: border-box;
 }
 .btn-exportar {
-    background-color: #007bff; color: white;
+    background-color: #007bff;
+    color: white;
 }
 .btn-exportar:hover {
     background-color: #0056b3;
@@ -179,13 +286,12 @@ h1 {
 }
 
 /* --- Estilos para el Modo de Exportación a PDF --- */
-/* Esta clase se añade al body temporalmente durante la exportación */
 body.pdf-export-mode {
     background-image: none;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
 }
-/* Oculta los elementos que NO queremos en el informe */
+.pdf-export-mode .btn-link, /* Oculta el div del icono */
 .pdf-export-mode .ico,
 .pdf-export-mode .formulario-entrada,
 .pdf-export-mode .acciones-btn,
@@ -198,7 +304,6 @@ body.pdf-export-mode {
 .pdf-export-mode .btn-peligro {
     display: none !important;
 }
-/* Adapta los estilos de los elementos que SÍ queremos que se vean */
 .pdf-export-mode .container {
     box-shadow: none;
     background-color: white;
@@ -253,12 +358,32 @@ body.pdf-export-mode {
 
 /* --- AJUSTES PARA MÓVILES --- */
 @media (max-width: 600px) {
-    body { padding: 10px; font-size: 15px; } 
-    .container { padding: 15px; margin: 10px auto; background-color: rgba(255, 255, 255, 0.30); }
-    h1 { font-size: 1.8em; margin-bottom: 20px; } 
-    .formulario-entrada { flex-direction: column; align-items: stretch; gap: 10px; background-color: rgba(249, 250, 251, 0.30); }
-    .formulario-entrada label { font-size: 1.5em; } 
-    .formulario-entrada input[type="date"], .formulario-entrada input[type="number"] { font-size: 1em; background-color: rgba(255, 255, 255, 0.6); }
+    body { 
+        padding: 10px; 
+        font-size: 15px; 
+    } 
+    .container { 
+        padding: 15px; 
+        margin: 10px auto; 
+        background-color: rgba(255, 255, 255, 0.30); 
+    }
+    h1 { 
+        font-size: 1.8em; 
+        margin-bottom: 20px; 
+    } 
+    .formulario-entrada { 
+        flex-direction: column; 
+        align-items: stretch; 
+        gap: 10px; 
+        background-color: rgba(249, 250, 251, 0.30); 
+    }
+    .formulario-entrada label { 
+        font-size: 1.5em; 
+    } 
+    .formulario-entrada input[type="date"], .formulario-entrada input[type="number"] { 
+        font-size: 1em; 
+        background-color: rgba(255, 255, 255, 0.6); 
+    }
     #campoFechaWrapper { width: 100%; } 
     #inputFecha { width: 100%; box-sizing: border-box; border-radius: 30px;} 
     .grupo-horas-agregar { width: 100%; gap: 10px; } 

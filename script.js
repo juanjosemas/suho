@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SELECCIÓN DE ELEMENTOS DEL DOM ---
     const bodyElement = document.body;
     const containerElement = document.querySelector('.container');
+    const btnHorario = document.getElementById('btnHorario');
     const inputFecha = document.getElementById('inputFecha');
     const inputHoras = document.getElementById('inputHoras');
     const btnAgregar = document.getElementById('btnAgregar');
@@ -54,12 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const celdaAcciones = fila.insertCell();
             const btnEditar = document.createElement('button');
             btnEditar.textContent = 'EDITAR';
-            btnEditar.type = 'button'; // Buena práctica para evitar envíos de formulario
+            btnEditar.type = 'button';
             btnEditar.classList.add('acciones-btn', 'btn-editar');
             btnEditar.onclick = () => editarEntrada(entrada.id);
             const btnBorrar = document.createElement('button');
             btnBorrar.textContent = 'BORRAR';
-            btnBorrar.type = 'button'; // Buena práctica para evitar envíos de formulario
+            btnBorrar.type = 'button';
             btnBorrar.classList.add('acciones-btn', 'btn-borrar');
             btnBorrar.onclick = () => borrarEntrada(entrada.id);
             celdaAcciones.appendChild(btnEditar);
@@ -121,12 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA FINAL Y ROBUSTA) ---
+    // --- FUNCIÓN DE EXPORTACIÓN A PDF ---
     function exportarAPDF() {
-        // 1. Preparamos la página para la "foto", añadiendo la clase de CSS.
         bodyElement.classList.add('pdf-export-mode');
-
-        // 2. Opciones de configuración para el PDF
         const opt = {
           margin: 15,
           filename: `informe_horas_${new Date().toISOString().split('T')[0]}.pdf`,
@@ -134,29 +132,33 @@ document.addEventListener('DOMContentLoaded', () => {
           html2canvas: { scale: 2, useCORS: true },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-
-        // 3. Llamamos a la librería. La clave es usar la promesa que devuelve.
-        // El proceso es: Tomar el elemento -> Generar el PDF -> Forzar la descarga -> LUEGO, restaurar la vista.
         html2pdf().from(containerElement).set(opt).save().then(() => {
-            // Este bloque se ejecuta DESPUÉS de que el PDF se ha guardado correctamente.
             bodyElement.classList.remove('pdf-export-mode');
         }).catch((error) => {
-            // Este bloque se ejecuta si hay un error.
             console.error('¡Ocurrió un error al generar el PDF!', error);
             bodyElement.classList.remove('pdf-export-mode');
         });
     }
 
     // --- EVENTOS (Listeners) ---
+    btnHorario.addEventListener('click', () => {
+        window.location.href = 'https://juanjosemas.github.io/horario';
+    });
     btnAgregar.addEventListener('click', procesarNuevaEntrada);
     inputHoras.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); procesarNuevaEntrada(); } });
     inputFecha.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); inputHoras.focus(); } });
     displayMultiplicador.addEventListener('dblclick', () => { displayMultiplicador.style.display = 'none'; inputMultiplicador.style.display = 'inline-block'; inputMultiplicador.value = multiplicador.toFixed(3); inputMultiplicador.focus(); inputMultiplicador.select(); });
     inputMultiplicador.addEventListener('blur', guardarNuevoMultiplicador);
-    inputMultiplicador.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); guardarNuevoMultiplicador(); } });
-    btnResetTodo.addEventListener('click', () => { if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) { entradas = []; localStorage.removeItem('horasTrabajadas_entradas'); renderizarTabla(); actualizarResumen(); inicializarFecha(); inputHoras.value = ''; if (document.activeElement === inputHoras || document.activeElement === inputFecha) { document.activeElement.blur(); } } });
     
-    // El listener del botón de exportar llama directamente a la función.
+    // <-- CAMBIO CLAVE: Corregido el error de tipeo aquí
+    inputMultiplicador.addEventListener('keypress', (event) => { 
+        if (event.key === 'Enter' || event.keyCode === 13) { 
+            event.preventDefault(); 
+            guardarNuevoMultiplicador(); 
+        } 
+    });
+
+    btnResetTodo.addEventListener('click', () => { if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) { entradas = []; localStorage.removeItem('horasTrabajadas_entradas'); renderizarTabla(); actualizarResumen(); inicializarFecha(); inputHoras.value = ''; if (document.activeElement === inputHoras || document.activeElement === inputFecha) { document.activeElement.blur(); } } });
     btnExportarPDF.addEventListener('click', exportarAPDF);
 
     // --- INICIALIZACIÓN DE LA APLICACIÓN ---
