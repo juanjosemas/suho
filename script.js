@@ -54,10 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const celdaAcciones = fila.insertCell();
             const btnEditar = document.createElement('button');
             btnEditar.textContent = 'EDITAR';
+            btnEditar.type = 'button'; // Buena práctica para evitar envíos de formulario
             btnEditar.classList.add('acciones-btn', 'btn-editar');
             btnEditar.onclick = () => editarEntrada(entrada.id);
             const btnBorrar = document.createElement('button');
             btnBorrar.textContent = 'BORRAR';
+            btnBorrar.type = 'button'; // Buena práctica para evitar envíos de formulario
             btnBorrar.classList.add('acciones-btn', 'btn-borrar');
             btnBorrar.onclick = () => borrarEntrada(entrada.id);
             celdaAcciones.appendChild(btnEditar);
@@ -119,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA CORREGIDA) ---
+    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA FINAL Y ROBUSTA) ---
     function exportarAPDF() {
         // 1. Preparamos la página para la "foto", añadiendo la clase de CSS.
         bodyElement.classList.add('pdf-export-mode');
@@ -133,15 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // 3. Llamamos a la librería para que genere y guarde el PDF.
-        // Usamos la promesa .then() para asegurarnos de limpiar la vista DESPUÉS de que se complete.
-        html2pdf().set(opt).from(containerElement).save().then(() => {
-            // Este código se ejecuta cuando el PDF se ha generado y el diálogo de guardar ha aparecido.
+        // 3. Llamamos a la librería. La clave es usar la promesa que devuelve.
+        // El proceso es: Tomar el elemento -> Generar el PDF -> Forzar la descarga -> LUEGO, restaurar la vista.
+        html2pdf().from(containerElement).set(opt).save().then(() => {
+            // Este bloque se ejecuta DESPUÉS de que el PDF se ha guardado correctamente.
             bodyElement.classList.remove('pdf-export-mode');
         }).catch((error) => {
-            // En caso de que ocurra un error durante la creación del PDF.
+            // Este bloque se ejecuta si hay un error.
             console.error('¡Ocurrió un error al generar el PDF!', error);
-            // Nos aseguramos de restaurar la vista también si hay un error.
             bodyElement.classList.remove('pdf-export-mode');
         });
     }
@@ -155,13 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
     inputMultiplicador.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); guardarNuevoMultiplicador(); } });
     btnResetTodo.addEventListener('click', () => { if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) { entradas = []; localStorage.removeItem('horasTrabajadas_entradas'); renderizarTabla(); actualizarResumen(); inicializarFecha(); inputHoras.value = ''; if (document.activeElement === inputHoras || document.activeElement === inputFecha) { document.activeElement.blur(); } } });
     
-    // <-- CAMBIO CLAVE: Listener del botón de exportar
-    btnExportarPDF.addEventListener('click', (event) => {
-        // Prevenimos el comportamiento por defecto del botón para evitar recargas.
-        event.preventDefault();
-        // Llamamos a la función de exportación.
-        exportarAPDF();
-    });
+    // El listener del botón de exportar llama directamente a la función.
+    btnExportarPDF.addEventListener('click', exportarAPDF);
 
     // --- INICIALIZACIÓN DE LA APLICACIÓN ---
     function inicializarFecha() {

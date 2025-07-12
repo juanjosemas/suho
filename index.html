@@ -29,7 +29,8 @@
                     <label for="inputHoras">Horas:</label>
                     <input type="number" id="inputHoras" placeholder="horas" step="0.5" min="0">
                 </div>
-                <button id="btnAgregar" title="Agregar Entrada">Agregar</button>
+                <!-- CAMBIO: Se añade type="button" -->
+                <button id="btnAgregar" type="button" title="Agregar Entrada">Agregar</button>
             </div>
         </div>
 
@@ -62,10 +63,11 @@
                 <span id="displayTotalFinal" class="valor-calculado gran-total">0.000</span>
             </div>
 
-            <!-- Botón para exportar a PDF -->
-            <button id="btnExportarPDF" class="btn-exportar">Exportar a PDF</button>
+            <!-- CAMBIO: Se añade type="button" -->
+            <button id="btnExportarPDF" type="button" class="btn-exportar">Exportar a PDF</button>
 
-            <button id="btnResetTodo" class="btn-peligro">Reiniciar Todo</button>
+            <!-- CAMBIO: Se añade type="button" -->
+            <button id="btnResetTodo" type="button" class="btn-peligro">Reiniciar Todo</button>
         </div>
     </div>
 
