@@ -119,34 +119,31 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN A PDF (CON LA NUEVA ESTRATEGIA) ---
+    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA CORREGIDA) ---
     function exportarAPDF() {
-        // Opciones de configuración para el PDF
+        // 1. Preparamos la página para la "foto", añadiendo la clase de CSS.
+        bodyElement.classList.add('pdf-export-mode');
+
+        // 2. Opciones de configuración para el PDF
         const opt = {
-          margin: 15, // Margen en mm
+          margin: 15,
           filename: `informe_horas_${new Date().toISOString().split('T')[0]}.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // Usamos un bloque try...finally para asegurarnos de que la página
-        // siempre vuelve a su estado normal, incluso si la exportación falla.
-        try {
-            // 1. Preparamos la página para la "foto", añadiendo la clase de CSS.
-            bodyElement.classList.add('pdf-export-mode');
-
-            // 2. Llamamos a la librería para que genere el PDF a partir del contenedor principal.
-            html2pdf().set(opt).from(containerElement).save();
-
-        } finally {
-            // 3. Este paso es crucial y se ejecuta después de que `save()` se lance.
-            // Para darle tiempo a la librería a tomar la "foto" antes de que restauremos la vista,
-            // añadimos un pequeño retardo.
-            setTimeout(() => {
-                bodyElement.classList.remove('pdf-export-mode');
-            }, 500); // Medio segundo de retardo.
-        }
+        // 3. Llamamos a la librería para que genere y guarde el PDF.
+        // Usamos la promesa .then() para asegurarnos de limpiar la vista DESPUÉS de que se complete.
+        html2pdf().set(opt).from(containerElement).save().then(() => {
+            // Este código se ejecuta cuando el PDF se ha generado y el diálogo de guardar ha aparecido.
+            bodyElement.classList.remove('pdf-export-mode');
+        }).catch((error) => {
+            // En caso de que ocurra un error durante la creación del PDF.
+            console.error('¡Ocurrió un error al generar el PDF!', error);
+            // Nos aseguramos de restaurar la vista también si hay un error.
+            bodyElement.classList.remove('pdf-export-mode');
+        });
     }
 
     // --- EVENTOS (Listeners) ---
@@ -157,7 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
     inputMultiplicador.addEventListener('blur', guardarNuevoMultiplicador);
     inputMultiplicador.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); guardarNuevoMultiplicador(); } });
     btnResetTodo.addEventListener('click', () => { if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) { entradas = []; localStorage.removeItem('horasTrabajadas_entradas'); renderizarTabla(); actualizarResumen(); inicializarFecha(); inputHoras.value = ''; if (document.activeElement === inputHoras || document.activeElement === inputFecha) { document.activeElement.blur(); } } });
-    btnExportarPDF.addEventListener('click', exportarAPDF);
+    
+    // <-- CAMBIO CLAVE: Listener del botón de exportar
+    btnExportarPDF.addEventListener('click', (event) => {
+        // Prevenimos el comportamiento por defecto del botón para evitar recargas.
+        event.preventDefault();
+        // Llamamos a la función de exportación.
+        exportarAPDF();
+    });
 
     // --- INICIALIZACIÓN DE LA APLICACIÓN ---
     function inicializarFecha() {
