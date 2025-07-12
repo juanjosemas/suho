@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (multiplicadorGuardado) {
             multiplicador = parseFloat(multiplicadorGuardado);
         }
+        ordenarEntradas();
         renderizarTabla();
         actualizarResumen();
         displayMultiplicador.textContent = multiplicador.toFixed(3);
@@ -42,6 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!fechaString) return '';
         const [year, month, day] = fechaString.split('-');
         return `${day}/${month}/${year.slice(-2)}`;
+    }
+    
+    // --- FUNCIÓN PARA ORDENAR POR FECHA ---
+    function ordenarEntradas() {
+        entradas.sort((a, b) => a.fecha.localeCompare(b.fecha));
     }
     
     // --- RENDERIZAR TABLA ---
@@ -79,21 +85,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- FUNCIÓN REUTILIZABLE PARA PROCESAR LA ENTRADA ---
-    // Esta función contiene la lógica de validación y agregado que antes estaba solo en el click del botón.
     function procesarNuevaEntrada() {
         const fecha = inputFecha.value;
         const horas = parseFloat(inputHoras.value);
 
         if (!fecha) {
             alert('Por favor, selecciona una fecha.');
-            inputFecha.focus(); // Devuelve el foco al campo de fecha si está vacío
-            return false; // Indica que la validación falló
+            inputFecha.focus(); 
+            return false;
         }
         if (isNaN(horas) || horas <= 0) {
             alert('Por favor, introduce un número de horas válido.');
-            inputHoras.focus(); // Mantiene el foco en el campo de horas
-            inputHoras.select(); // Selecciona el contenido para fácil corrección
-            return false; // Indica que la validación falló
+            inputHoras.focus(); 
+            inputHoras.select(); 
+            return false;
         }
 
         const nuevaEntrada = {
@@ -103,47 +108,38 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         entradas.push(nuevaEntrada);
         
+        ordenarEntradas();
         renderizarTabla();
         actualizarResumen();
         guardarDatos();
 
-        inputHoras.value = ''; // Limpiar input de horas
+        inputHoras.value = ''; 
         
-        // --- CAMBIO: OCULTAR TECLADO (DESENFOCANDO EL INPUT ACTIVO) ---
-        // La forma más simple de intentar ocultar el teclado es quitar el foco del input.
-        // Si el foco estaba en inputHoras, desenfocarlo.
-        // Si el foco pasó al botón "Agregar" (en caso de clic), el teclado usualmente se oculta.
-        // Si fue por Enter en inputHoras, desenfocarlo es clave.
         if (document.activeElement === inputHoras || document.activeElement === inputFecha) {
             document.activeElement.blur(); 
         }
-        // No siempre es necesario devolver el foco a inputFecha, puede ser mejor no tener foco
-        // inputFecha.focus(); // Opcional: devolver el foco al campo de fecha para la siguiente entrada
 
-        return true; // Indica que la entrada fue procesada exitosamente
+        return true; 
     }
 
     // --- AGREGAR ENTRADA (POR CLIC EN BOTÓN) ---
     btnAgregar.addEventListener('click', () => {
         procesarNuevaEntrada();
-        // El teclado debería ocultarse naturalmente al hacer clic en un botón que no es un input.
-        // Si no es así, la llamada a .blur() dentro de procesarNuevaEntrada (si el foco estaba en un input) ayudará.
     });
 
-    // --- CAMBIO: AGREGAR ENTRADA CON TECLA "INTRO" EN EL CAMPO DE HORAS ---
+    // --- AGREGAR ENTRADA CON TECLA "INTRO" EN EL CAMPO DE HORAS ---
     inputHoras.addEventListener('keypress', (event) => {
-        // 'Enter' tiene keyCode 13 o key 'Enter'
         if (event.key === 'Enter' || event.keyCode === 13) {
-            event.preventDefault(); // Prevenir el comportamiento por defecto (ej. submit de formulario si existiera)
-            procesarNuevaEntrada(); // Llama a la misma lógica que el botón agregar
+            event.preventDefault(); 
+            procesarNuevaEntrada(); 
         }
     });
 
-    // --- CAMBIO: PERMITIR "INTRO" EN FECHA PARA PASAR A HORAS (OPCIONAL MEJORA UX) ---
+    // --- PERMITIR "INTRO" EN FECHA PARA PASAR A HORAS ---
     inputFecha.addEventListener('keypress', (event) => {
         if (event.key === 'Enter' || event.keyCode === 13) {
             event.preventDefault();
-            inputHoras.focus(); // Mueve el foco al campo de horas
+            inputHoras.focus(); 
         }
     });
 
@@ -170,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
+        ordenarEntradas();
         renderizarTabla();
         actualizarResumen();
         guardarDatos();
@@ -219,19 +216,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- REINICIAR TODO ---
     btnResetTodo.addEventListener('click', () => {
-        if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas y reiniciar el multiplicador? Esta acción no se puede deshacer.')) {
+        // <-- CAMBIO: Se ha modificado el mensaje de confirmación para no mencionar el multiplicador.
+        if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) {
             entradas = [];
-            multiplicador = 1.000;
+            // <-- CAMBIO: La siguiente línea que reiniciaba el multiplicador a 1.000 ha sido ELIMINADA.
+            // multiplicador = 1.000; 
+            
             localStorage.removeItem('horasTrabajadas_entradas');
-            localStorage.removeItem('horasTrabajadas_multiplicador');
+            // <-- CAMBIO: La siguiente línea que borraba el multiplicador del almacenamiento ha sido ELIMINADA.
+            // localStorage.removeItem('horasTrabajadas_multiplicador');
             
             renderizarTabla();
-            actualizarResumen();
-            displayMultiplicador.textContent = multiplicador.toFixed(3);
+            actualizarResumen(); // Esta función ahora recalculará los totales con las entradas vacías pero con el multiplicador actual.
+            displayMultiplicador.textContent = multiplicador.toFixed(3); // Nos aseguramos de que el display del multiplicador sigue mostrando el valor correcto.
             inputFecha.value = '';
             inputHoras.value = '';
             inicializarFecha();
-            // Ocultar teclado si algún input tenía foco
+            
             if (document.activeElement === inputHoras || document.activeElement === inputFecha) {
                 document.activeElement.blur();
             }
