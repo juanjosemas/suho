@@ -198,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputMultiplicador.addEventListener('blur', guardarNuevoMultiplicador);
     inputMultiplicador.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); guardarNuevoMultiplicador(); } });
     btnResetTodo.addEventListener('click', () => { if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) { entradas = []; localStorage.removeItem('horasTrabajadas_entradas'); renderizarTabla(); actualizarResumen(); inicializarFecha(); inputHoras.value = ''; if (document.activeElement === inputHoras || document.activeElement === inputFecha) { document.activeElement.blur(); } } });
+    
     btnExportarPDF.addEventListener('click', exportarAPDF);
 
     // --- INICIALIZACIÓN DE LA APLICACIÓN ---
