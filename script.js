@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA FINAL Y A PRUEBA DE FALLOS) ---
+    // --- FUNCIÓN DE EXPORTACIÓN (MÉTODO DE IMPRESIÓN NATIVA) ---
     function exportarAPDF() {
         // 1. Recopilar datos
         const sumaHoras = parseFloat(displaySumaHoras.textContent);
@@ -140,18 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .reporte-footer { text-align: center; margin-top: 30px; font-size: 10px; color: #888; }
         `;
 
-        // 3. Crear un iframe invisible
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'absolute';
-        iframe.style.width = '0';
-        iframe.style.height = '0';
-        iframe.style.border = '0';
-        document.body.appendChild(iframe);
+        // 3. Abrir una nueva ventana en blanco
+        const printWindow = window.open('', '_blank');
 
-        // 4. Escribir el HTML completo del informe en el iframe
-        const doc = iframe.contentWindow.document;
-        doc.open();
-        doc.write(`
+        // 4. Escribir el HTML completo del informe en esa nueva ventana
+        printWindow.document.write(`
             <!DOCTYPE html>
             <html lang="es">
             <head>
@@ -177,17 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </body>
             </html>
         `);
-        doc.close();
-
-        // 5. Esperar a que el contenido (especialmente las fuentes) se cargue y lanzar la impresión
-        iframe.onload = function() {
-            iframe.contentWindow.focus();
-            iframe.contentWindow.print();
-            // Eliminar el iframe después de un tiempo para no dejarlo en el DOM
-            setTimeout(() => {
-                document.body.removeChild(iframe);
-            }, 1000);
-        };
+        
+        // 5. Cerrar el flujo de escritura y lanzar el diálogo de impresión del navegador
+        printWindow.document.close();
+        printWindow.focus(); // Ayuda a asegurar que la nueva ventana tenga el foco
+        printWindow.print();
     }
 
     // --- EVENTOS (Listeners) ---
@@ -198,7 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
     inputMultiplicador.addEventListener('blur', guardarNuevoMultiplicador);
     inputMultiplicador.addEventListener('keypress', (event) => { if (event.key === 'Enter' || event.keyCode === 13) { event.preventDefault(); guardarNuevoMultiplicador(); } });
     btnResetTodo.addEventListener('click', () => { if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) { entradas = []; localStorage.removeItem('horasTrabajadas_entradas'); renderizarTabla(); actualizarResumen(); inicializarFecha(); inputHoras.value = ''; if (document.activeElement === inputHoras || document.activeElement === inputFecha) { document.activeElement.blur(); } } });
-    
     btnExportarPDF.addEventListener('click', exportarAPDF);
 
     // --- INICIALIZACIÓN DE LA APLICACIÓN ---
