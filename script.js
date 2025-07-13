@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         guardarDatos();
     }
 
-    // --- FUNCIÓN DE EXPORTACIÓN (MÉTODO FINAL Y ROBUSTO) ---
+    // --- FUNCIÓN DE EXPORTACIÓN A PDF (LÓGICA FINAL Y A PRUEBA DE FALLOS) ---
     function exportarAPDF() {
         // 1. Recopilar datos
         const sumaHoras = parseFloat(displaySumaHoras.textContent);
@@ -128,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Definir los estilos CSS para la página de impresión
         const estilosPDF = `
-            body { font-family: Arial, sans-serif; color: #000; margin: 0; padding: 15px; }
-            h1 { color: #111; text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 10px; font-size: 24px; font-weight: bold; }
+            body { font-family: 'Open Sans', sans-serif; color: #000; margin: 0; padding: 15px; }
+            h1 { font-family: 'Metal Mania', cursive; color: #111; text-align: center; border-bottom: 2px solid #ccc; padding-bottom: 10px; font-size: 28px; }
             table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
             th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
             th { background-color: #e9e9e9; font-weight: bold; text-align: center; }
@@ -140,61 +140,54 @@ document.addEventListener('DOMContentLoaded', () => {
             .reporte-footer { text-align: center; margin-top: 30px; font-size: 10px; color: #888; }
         `;
 
-        // 3. Abrir una nueva ventana en blanco
-        const printWindow = window.open('', '_blank');
+        // 3. Crear un iframe invisible
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = '0';
+        document.body.appendChild(iframe);
 
-        // 4. Escribir el HTML completo del informe en esa nueva ventana
-        printWindow.document.write(`
+        // 4. Escribir el HTML completo del informe en el iframe
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(`
             <!DOCTYPE html>
             <html lang="es">
             <head>
                 <meta charset="UTF-8">
                 <title>Informe de Horas</title>
-                <!-- Ya NO usamos la fuente personalizada para evitar errores de renderizado -->
+                <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
                 <style>${estilosPDF}</style>
-                <!-- Se inyecta la librería DENTRO de la nueva ventana -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
             </head>
             <body>
-                <div id="informe-para-exportar">
-                    <h1>Informe de Horas Trabajadas</h1>
-                    <table>
-                        <thead><tr><th>FECHA</th><th>HORAS</th></tr></thead>
-                        <tbody>${filasTablaReporte}</tbody>
-                    </table>
-                    <div class="reporte-resumen">
-                        <p><strong>SUMA DE LAS HORAS:</strong> <span>${sumaHoras.toFixed(1)}</span></p>
-                        <p><strong>MULTIPLICADOR:</strong> <span>${multiplicador.toFixed(3)}</span></p>
-                        <p><strong>TOTAL FINAL:</strong> <span>${totalFinal.toFixed(3)}</span></p>
-                    </div>
-                    <div class="reporte-footer">
-                        <p>Informe generado el ${new Date().toLocaleString('es-ES')}</p>
-                    </div>
+                <h1>Informe de Horas Trabajadas</h1>
+                <table>
+                    <thead><tr><th>FECHA</th><th>HORAS</th></tr></thead>
+                    <tbody>${filasTablaReporte}</tbody>
+                </table>
+                <div class="reporte-resumen">
+                    <p><strong>SUMA DE LAS HORAS:</strong> <span>${sumaHoras.toFixed(1)}</span></p>
+                    <p><strong>MULTIPLICADOR:</strong> <span>${multiplicador.toFixed(3)}</span></p>
+                    <p><strong>TOTAL FINAL:</strong> <span>${totalFinal.toFixed(3)}</span></p>
+                </div>
+                <div class="reporte-footer">
+                    <p>Informe generado el ${new Date().toLocaleString('es-ES')}</p>
                 </div>
             </body>
             </html>
         `);
-        
-        // 5. Cerrar el flujo de escritura
-        printWindow.document.close();
-        printWindow.focus(); 
-        
-        // 6. Ejecutar html2pdf DENTRO de la nueva ventana
-        // Usamos un pequeño retardo para asegurar que la librería se ha cargado en la nueva ventana
-        setTimeout(() => { 
-            const elemento = printWindow.document.getElementById('informe-para-exportar');
-            const opt = {
-              margin: 15,
-              filename: `informe_horas_${new Date().toISOString().split('T')[0]}.pdf`,
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: { scale: 2 },
-              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            // Llamamos a html2pdf desde el contexto de la nueva ventana
-            printWindow.html2pdf().from(elemento).set(opt).save().then(() => {
-                printWindow.close(); // Cerrar la ventana emergente después de guardar
-            });
-        }, 500); // Medio segundo de retardo para más seguridad
+        doc.close();
+
+        // 5. Esperar a que el contenido (especialmente las fuentes) se cargue y lanzar la impresión
+        iframe.onload = function() {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            // Eliminar el iframe después de un tiempo para no dejarlo en el DOM
+            setTimeout(() => {
+                document.body.removeChild(iframe);
+            }, 1000);
+        };
     }
 
     // --- EVENTOS (Listeners) ---
