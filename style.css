@@ -2,6 +2,7 @@
 body {
     /* Estilos generales del cuerpo de la página */
     font-family: Piedra;
+    font-style: italic;
     margin: 0; /* Sin margen exterior */
     padding: 20px; /* Espaciado interior */
     color: black; /* Color de texto principal */
@@ -129,6 +130,7 @@ h1 {
     white-space: nowrap; 
     height: 35px; 
     font-family: Piedra;
+    font-style: italic;
     text-shadow: 5px 4px 2px #000;
 }
 #btnAgregar:hover {
