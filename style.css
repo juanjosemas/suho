@@ -296,6 +296,7 @@ h1 {
     font-family: Metal mania;
     font-size: 15px;
     font-weight: bold;
+    font-style: italic;
 }
 .btn-peligro:hover {
     background-color: #c82333; 
