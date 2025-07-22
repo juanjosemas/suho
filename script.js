@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const displayTotalFinal = document.getElementById('displayTotalFinal');
     const btnResetTodo = document.getElementById('btnResetTodo');
     
-    // --- CAMBIO: Se añade la referencia al nuevo botón de exportación ---
-    const btnExportarPDF = document.getElementById('btnExportarPDF');
+    // --- CAMBIO: Se cambia la referencia al nuevo ID del botón ---
+    const btnImprimir = document.getElementById('btnImprimir');
 
     let entradas = [];
     let multiplicador = 1.000;
@@ -221,33 +221,44 @@ document.addEventListener('DOMContentLoaded', () => {
     btnResetTodo.addEventListener('click', () => {
         if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) {
             entradas = [];
-            
             localStorage.removeItem('horasTrabajadas_entradas');
-            
             renderizarTabla();
             actualizarResumen(); 
             displayMultiplicador.textContent = multiplicador.toFixed(3); 
             inputFecha.value = '';
             inputHoras.value = '';
             inicializarFecha();
-            
             if (document.activeElement === inputHoras || document.activeElement === inputFecha) {
                 document.activeElement.blur();
             }
         }
     });
 
-    // --- CAMBIO: NUEVA FUNCIÓN Y LISTENER PARA EXPORTAR A PDF ---
-    function exportarAPDF() {
+    // --- CAMBIO: FUNCIÓN DEFINITIVA PARA IMPRIMIR O GUARDAR COMO PDF ---
+    function imprimirInforme() {
         if (entradas.length === 0) {
             alert("No hay datos para exportar. Agrega al menos una entrada.");
             return;
         }
 
-        // 1. Construir el HTML para el PDF
-        let tablaHtml = '';
+        // 1. Crear los estilos para el informe
+        const estilos = `
+            <style>
+                body { font-family: Arial, sans-serif; margin: 30px; }
+                table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+                th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+                th { background-color: #f2f2f2; font-weight: bold; }
+                h1 { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                .resumen { float: right; width: 350px; margin-top: 25px; border-top: 2px solid #333; padding-top: 10px; }
+                .resumen-fila { display: flex; justify-content: space-between; padding: 5px; }
+                .total-final { font-weight: bold; font-size: 1.1em; }
+            </style>
+        `;
+
+        // 2. Crear las filas de la tabla principal
+        let filasHtml = '';
         entradas.forEach(entrada => {
-            tablaHtml += `
+            filasHtml += `
                 <tr>
                     <td>${formatearFecha(entrada.fecha)}</td>
                     <td>${parseFloat(entrada.horas).toFixed(1)}</td>
@@ -255,54 +266,52 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         });
 
+        // 3. Obtener los totales
         const totalHoras = displaySumaHoras.textContent;
         const totalFinal = displayTotalFinal.textContent;
 
-        const contenidoHTML = `
-            <div style="font-family: Arial, sans-serif; margin: 20px;">
-                <h1 style="text-align: center; color: #333;">Informe de Horas Trabajadas</h1>
-                <br/>
-                <table style="width: 100%; border-collapse: collapse;">
+        // 4. Montar el HTML completo del informe
+        const contenidoHtml = `
+            <html>
+            <head>
+                <title>Informe de Horas Trabajadas</title>
+                ${estilos}
+            </head>
+            <body>
+                <h1>Informe de Horas Trabajadas</h1>
+                <table>
                     <thead>
-                        <tr style="background-color: #f2f2f2;">
-                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Fecha</th>
-                            <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Horas</th>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Horas</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${tablaHtml}
+                        ${filasHtml}
                     </tbody>
                 </table>
-                <br/><br/>
-                <div style="float: right; text-align: right; width: 250px; font-size: 1.2em;">
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <strong style="margin-right: 20px;">Total de Horas:</strong>
+                <div class="resumen">
+                    <div class="resumen-fila">
+                        <span>Total de Horas:</span>
                         <span>${totalHoras}</span>
                     </div>
-                    <div style="padding: 10px; background-color: #f2f2f2;">
-                        <strong style="margin-right: 20px;">Total a Cobrar:</strong>
+                    <div class="resumen-fila total-final">
+                        <span>Total a Cobrar (€):</span>
                         <span>${totalFinal}</span>
                     </div>
                 </div>
-            </div>
+            </body>
+            </html>
         `;
 
-        // 2. Opciones de configuración para html2pdf
-        const hoy = new Date().toISOString().split('T')[0];
-        const opciones = {
-            margin:       0.5,
-            filename:     `informe-horas-${hoy}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-
-        // 3. Generar y guardar el PDF
-        html2pdf().from(contenidoHTML).set(opciones).save();
+        // 5. Abrir una nueva ventana, escribir el HTML y llamar a imprimir
+        const win = window.open('', '', 'height=700,width=700');
+        win.document.write(contenidoHtml);
+        win.document.close(); // Necesario para que la carga finalice
+        win.print(); // Abre el diálogo de impresión
     }
 
-    btnExportarPDF.addEventListener('click', exportarAPDF);
-    
+    btnImprimir.addEventListener('click', imprimirInforme);
 
      // --- INICIALIZACIÓN ---
     function inicializarFecha() {

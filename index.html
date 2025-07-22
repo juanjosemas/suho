@@ -9,9 +9,6 @@
     <!-- Enlace para fuentes de google -->
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Caveat:wght@700&family=Dancing+Script:wght@700&family=Lobster&family=Metal+Mania&family=Open+Sans:wght@300;400;700&family=Permanent+Marker&family=Piedra&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet">
     
-    <!-- --- CAMBIO: Se añade la librería para generar PDF --- -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
 </head>
 <body>
     <div class="container">
@@ -50,20 +47,20 @@
             <marquee><h1>Resumen y Cálculos</h1></marquee>
             <div class="resumen-fila">
                 <span class="resumen-label">MULTIPLICADOR:</span>
-                <span id="displayMultiplicador" class="valor-editable" title="Doble clic para editar">1.000</span> <!-- Cambiado a 3 decimales por defecto -->
-                <input type="number" id="inputMultiplicador" class="input-editable" step="0.001" style="display:none;"> <!-- Cambiado step a 0.001 -->
+                <span id="displayMultiplicador" class="valor-editable" title="Doble clic para editar">1.000</span>
+                <input type="number" id="inputMultiplicador" class="input-editable" step="0.001" style="display:none;">
             </div>
             <div class="resumen-fila">
                 <span class="resumen-label">SUMA DE LAS HORAS:</span>
-                <span id="displaySumaHoras" class="valor-calculado">0.0</span> <!-- Cambiado a 1 decimal por defecto -->
+                <span id="displaySumaHoras" class="valor-calculado">0.0</span>
             </div>
             <div class="resumen-fila">
                 <span class="resumen-label">TOTAL:</span>
                 <span id="displayTotalFinal" class="valor-calculado gran-total">0.000</span>
             </div>
             
-            <!-- --- CAMBIO: Se añade el botón para exportar --- -->
-            <button id="btnExportarPDF" class="btn-exportar">Exportar a PDF</button>
+            <!-- --- CAMBIO: Se modifica el ID y el texto del botón para la nueva función --- -->
+            <button id="btnImprimir" class="btn-exportar">Imprimir o Guardar como PDF</button>
 
             <button id="btnResetTodo" class="btn-peligro">Reiniciar Todo</button>
         </div>
