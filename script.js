@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const displaySumaHoras = document.getElementById('displaySumaHoras');
     const displayTotalFinal = document.getElementById('displayTotalFinal');
     const btnResetTodo = document.getElementById('btnResetTodo');
+    
+    // --- CAMBIO: Se añade la referencia al nuevo botón de exportación ---
+    const btnExportarPDF = document.getElementById('btnExportarPDF');
 
     let entradas = [];
     let multiplicador = 1.000;
@@ -216,19 +219,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- REINICIAR TODO ---
     btnResetTodo.addEventListener('click', () => {
-        // <-- CAMBIO: Se ha modificado el mensaje de confirmación para no mencionar el multiplicador.
         if (confirm('¿Estás seguro de que quieres borrar TODAS las entradas? El multiplicador no cambiará. Esta acción no se puede deshacer.')) {
             entradas = [];
-            // <-- CAMBIO: La siguiente línea que reiniciaba el multiplicador a 1.000 ha sido ELIMINADA.
-            // multiplicador = 1.000; 
             
             localStorage.removeItem('horasTrabajadas_entradas');
-            // <-- CAMBIO: La siguiente línea que borraba el multiplicador del almacenamiento ha sido ELIMINADA.
-            // localStorage.removeItem('horasTrabajadas_multiplicador');
             
             renderizarTabla();
-            actualizarResumen(); // Esta función ahora recalculará los totales con las entradas vacías pero con el multiplicador actual.
-            displayMultiplicador.textContent = multiplicador.toFixed(3); // Nos aseguramos de que el display del multiplicador sigue mostrando el valor correcto.
+            actualizarResumen(); 
+            displayMultiplicador.textContent = multiplicador.toFixed(3); 
             inputFecha.value = '';
             inputHoras.value = '';
             inicializarFecha();
@@ -238,6 +236,73 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // --- CAMBIO: NUEVA FUNCIÓN Y LISTENER PARA EXPORTAR A PDF ---
+    function exportarAPDF() {
+        if (entradas.length === 0) {
+            alert("No hay datos para exportar. Agrega al menos una entrada.");
+            return;
+        }
+
+        // 1. Construir el HTML para el PDF
+        let tablaHtml = '';
+        entradas.forEach(entrada => {
+            tablaHtml += `
+                <tr>
+                    <td>${formatearFecha(entrada.fecha)}</td>
+                    <td>${parseFloat(entrada.horas).toFixed(1)}</td>
+                </tr>
+            `;
+        });
+
+        const totalHoras = displaySumaHoras.textContent;
+        const totalFinal = displayTotalFinal.textContent;
+
+        const contenidoHTML = `
+            <div style="font-family: Arial, sans-serif; margin: 20px;">
+                <h1 style="text-align: center; color: #333;">Informe de Horas Trabajadas</h1>
+                <br/>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #f2f2f2;">
+                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Fecha</th>
+                            <th style="border: 1px solid #ddd; padding: 12px; text-align: right;">Horas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tablaHtml}
+                    </tbody>
+                </table>
+                <br/><br/>
+                <div style="float: right; text-align: right; width: 250px; font-size: 1.2em;">
+                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
+                        <strong style="margin-right: 20px;">Total de Horas:</strong>
+                        <span>${totalHoras}</span>
+                    </div>
+                    <div style="padding: 10px; background-color: #f2f2f2;">
+                        <strong style="margin-right: 20px;">Total a Cobrar:</strong>
+                        <span>${totalFinal}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // 2. Opciones de configuración para html2pdf
+        const hoy = new Date().toISOString().split('T')[0];
+        const opciones = {
+            margin:       0.5,
+            filename:     `informe-horas-${hoy}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        // 3. Generar y guardar el PDF
+        html2pdf().from(contenidoHTML).set(opciones).save();
+    }
+
+    btnExportarPDF.addEventListener('click', exportarAPDF);
+    
 
      // --- INICIALIZACIÓN ---
     function inicializarFecha() {

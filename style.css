@@ -283,9 +283,31 @@ h1 {
     font-size: 1.3em; 
 }
 
+/* --- CAMBIO: Se añaden estilos para el nuevo botón de exportar y se ajusta el contenedor de botones --- */
+.btn-exportar {
+    display: block;
+    margin: 20px auto 10px; /* Margen para separarlo de los otros elementos */
+    padding: 10px 20px;
+    background-color: #006400; /* Verde oscuro */
+    color: white;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: 'Metal Mania', cursive;
+    font-size: 15px;
+    font-weight: bold;
+    font-style: italic;
+    text-shadow: 2px 2px 2px #000;
+}
+.btn-exportar:hover {
+    background-color: #008000; /* Verde más claro */
+}
+
+
 .btn-peligro {
     display: block; 
-    margin: 20px auto 0; 
+    margin: 10px auto 0; /* Margen ajustado */
     padding: 10px 20px; 
     background-color: #dc3545; 
     color: black; 
@@ -301,12 +323,6 @@ h1 {
 .btn-peligro:hover {
     background-color: #c82333; 
 }
-
-
-
-
-
-
 
 /* --- AJUSTES PARA MÓVILES --- */
 @media (max-width: 600px) {
